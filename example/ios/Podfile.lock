@@ -1,0 +1,205 @@
+PODS:
+  - boost-for-react-native (1.63.0)
+  - BSBacktraceLogger (0.0.1)
+  - CocoaLumberjack (3.6.0):
+    - CocoaLumberjack/Core (= 3.6.0)
+  - CocoaLumberjack/Core (3.6.0)
+  - DoraemonKit/Core (1.1.9):
+    - BSBacktraceLogger
+    - fishhook
+    - PNChart
+    - UITextView+Placeholder
+  - DoraemonKit/WithGPS (1.1.9):
+    - BSBacktraceLogger
+    - DoraemonKit/Core
+    - fishhook
+    - PNChart
+    - UITextView+Placeholder
+  - DoraemonKit/WithLogger (1.1.9):
+    - BSBacktraceLogger
+    - CocoaLumberjack
+    - DoraemonKit/Core
+    - fishhook
+    - PNChart
+    - UITextView+Placeholder
+  - DoubleConversion (1.1.6)
+  - fishhook (0.2)
+  - Folly (2016.10.31.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+  - glog (0.3.5)
+  - IQKeyboardManager (6.5.0)
+  - MBProgressHUD (1.0.0)
+  - PNChart (0.8.9):
+    - UICountingLabel (~> 1.2.0)
+  - React (0.57.2):
+    - React/Core (= 0.57.2)
+  - react-native-camera (1.0.15):
+    - React
+  - react-native-cookies (1.0.3):
+    - React
+  - react-native-image-picker (1.0.14):
+    - React
+    - TZImagePickerController
+    - ZBarSDK-hicool (~> 0.0.1)
+  - react-native-social (0.0.1):
+    - React
+    - WechatOpenSDK (= 1.8.5)
+  - React/Core (0.57.2):
+    - yoga (= 0.57.2.React)
+  - React/CxxBridge (0.57.2):
+    - Folly (= 2016.10.31.00)
+    - React/Core
+    - React/cxxreact
+  - React/cxxreact (0.57.2):
+    - boost-for-react-native (= 1.63.0)
+    - Folly (= 2016.10.31.00)
+    - React/jschelpers
+    - React/jsinspector
+  - React/DevSupport (0.57.2):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.57.2)
+  - React/jschelpers (0.57.2):
+    - Folly (= 2016.10.31.00)
+    - React/PrivateDatabase
+  - React/jsinspector (0.57.2)
+  - React/PrivateDatabase (0.57.2)
+  - React/RCTActionSheet (0.57.2):
+    - React/Core
+  - React/RCTAnimation (0.57.2):
+    - React/Core
+  - React/RCTBlob (0.57.2):
+    - React/Core
+  - React/RCTGeolocation (0.57.2):
+    - React/Core
+  - React/RCTImage (0.57.2):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.57.2):
+    - React/Core
+  - React/RCTNetwork (0.57.2):
+    - React/Core
+  - React/RCTSettings (0.57.2):
+    - React/Core
+  - React/RCTText (0.57.2):
+    - React/Core
+  - React/RCTWebSocket (0.57.2):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - rn-debug (0.0.1):
+    - DoraemonKit/Core (~> 1.1.5)
+    - DoraemonKit/WithGPS (~> 1.1.5)
+    - DoraemonKit/WithLogger (~> 1.1.5)
+    - React
+    - rn-env
+  - rn-env (1.0.0):
+    - React
+  - RNGestureHandler (1.1.0):
+    - React
+  - RNSVG (6.4.1):
+    - React
+  - trnw-toast (1.0.0):
+    - MBProgressHUD (~> 1.0.0)
+    - React
+  - TZImagePickerController (3.2.6)
+  - UICountingLabel (1.2.0)
+  - UITextView+Placeholder (1.3.3)
+  - WechatOpenSDK (1.8.5)
+  - yoga (0.57.2.React)
+  - ZBarSDK-hicool (0.0.1):
+    - ZBarSDK-hicool/zbar (= 0.0.1)
+  - ZBarSDK-hicool/zbar (0.0.1)
+
+DEPENDENCIES:
+  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - IQKeyboardManager
+  - react-native-camera (from `../node_modules/@terminus/react-native-camera/ios`)
+  - react-native-cookies (from `../node_modules/@terminus/react-native-cookies/ios`)
+  - react-native-image-picker (from `../node_modules/@terminus/react-native-image-picker/ios`)
+  - react-native-social (from `../../ios/react-native-social.podspec`)
+  - React/Core (from `../node_modules/react-native/`)
+  - React/CxxBridge (from `../node_modules/react-native/`)
+  - React/DevSupport (from `../node_modules/react-native/`)
+  - React/RCTActionSheet (from `../node_modules/react-native/`)
+  - React/RCTAnimation (from `../node_modules/react-native/`)
+  - React/RCTGeolocation (from `../node_modules/react-native/`)
+  - React/RCTImage (from `../node_modules/react-native/`)
+  - React/RCTLinkingIOS (from `../node_modules/react-native/`)
+  - React/RCTNetwork (from `../node_modules/react-native/`)
+  - React/RCTSettings (from `../node_modules/react-native/`)
+  - React/RCTText (from `../node_modules/react-native/`)
+  - React/RCTWebSocket (from `../node_modules/react-native/`)
+  - rn-debug (from `../node_modules/@terminus/rn-debug/ios`)
+  - rn-env (from `../node_modules/@terminus/rn-debug/ios`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler/RNGestureHandler.podspec`)
+  - RNSVG (from `../node_modules/react-native-svg/RNSVG.podspec`)
+  - trnw-toast (from `../node_modules/@terminus/trnw-toast/ios`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
+
+EXTERNAL SOURCES:
+  DoubleConversion:
+    :podspec: ../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
+  Folly:
+    :podspec: ../node_modules/react-native/third-party-podspecs/Folly.podspec
+  glog:
+    :podspec: ../node_modules/react-native/third-party-podspecs/glog.podspec
+  React:
+    :path: ../node_modules/react-native/
+  react-native-camera:
+    :path: ../node_modules/@terminus/react-native-camera/ios
+  react-native-cookies:
+    :path: ../node_modules/@terminus/react-native-cookies/ios
+  react-native-image-picker:
+    :path: ../node_modules/@terminus/react-native-image-picker/ios
+  react-native-social:
+    :path: ../../ios/react-native-social.podspec
+  rn-debug:
+    :path: ../node_modules/@terminus/rn-debug/ios
+  rn-env:
+    :path: ../node_modules/@terminus/rn-debug/ios
+  RNGestureHandler:
+    :path: ../node_modules/react-native-gesture-handler/RNGestureHandler.podspec
+  RNSVG:
+    :path: ../node_modules/react-native-svg/RNSVG.podspec
+  trnw-toast:
+    :path: ../node_modules/@terminus/trnw-toast/ios
+  yoga:
+    :path: ../node_modules/react-native/ReactCommon/yoga/yoga.podspec
+
+SPEC CHECKSUMS:
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  BSBacktraceLogger: 06b983ee93a9f87d957960e9c73d660d5966b447
+  CocoaLumberjack: 78b0c238666f4f58db069738ec176f4519557516
+  DoraemonKit: efea4a8afe0a6f2aadffcf5e66010bff692c6f05
+  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
+  fishhook: ea19933abfe8f2f52c55fd8b6e2718467d3ebc89
+  Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
+  glog: e8acf0ebbf99759d3ff18c86c292a5898282dcde
+  IQKeyboardManager: 700e5155d6a292383b54e8678aec769e14fc78fc
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  PNChart: 84774d225c2126ded6c93d4dbe6ae98c3a73c2d2
+  React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
+  react-native-camera: 8e11c97867b9fafc5234290431b0ee976b4e885c
+  react-native-cookies: 31d62053f6f661a7cb2228d78166c25ea9d51f3c
+  react-native-image-picker: c7e227ef6f5ac6a2b1995d509a9684cd8f858713
+  react-native-social: 914b7ae1934ae05e7088fa8a1034c16de6954ee1
+  rn-debug: b4e1915f37a877311214a340736e654d517c8e84
+  rn-env: 762e1417d4a648caf8221ac3539807ab0a17586f
+  RNGestureHandler: afde2addc517e85cc97a25bfe119acbee779a7ce
+  RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
+  trnw-toast: 93b6cb1a0596cef345112b62be125e996fb2a74d
+  TZImagePickerController: 3900e8d68428ff3a88817efce82ae9e7d9ffebc9
+  UICountingLabel: 1db4e7d023e1762171eb226d6dff47a7a84f27aa
+  UITextView+Placeholder: c407b27599ea23cca425946fee3cf1db5d547008
+  WechatOpenSDK: 9b15110aba1d502456d8e83677357e6437f2e751
+  yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
+  ZBarSDK-hicool: ee679a29fde9431ab705b230a1bc64d5727c043b
+
+PODFILE CHECKSUM: 4d3fb817e465ce27a2f10652ec36ad2704db8c99
+
+COCOAPODS: 1.4.0

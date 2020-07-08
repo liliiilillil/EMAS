@@ -1,0 +1,36 @@
+{
+  "presets": [
+    "module:metro-react-native-babel-preset"
+  ],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd-mobile"
+      }
+    ],
+    "react-native-classname-to-style",
+    [
+      "react-native-platform-specific-extensions",
+      {
+        "extensions": ["scss"]
+      }
+    ],
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./",
+          "./app",
+          "./node_modules/@terminus/"
+        ],
+        "alias": {
+          "react-native-web-utils": "./node_modules/@terminus/trnw-tools/react-native-web-utils",
+          "react-native-navigators-tools": "./node_modules/@terminus/trnw-tools/react-native-navigators-tools"
+        },
+        "extensions": [".scss", ".less", ".android.js", ".ios.js", ".native.js", ".js", ".ts", ".tsx", ".json"]
+      }
+    ],
+    ["@babel/plugin-proposal-decorators", { "legacy": true }]
+  ]
+}

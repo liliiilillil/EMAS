@@ -1,0 +1,50 @@
+{
+  "name": "social",
+  "version": "3.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
+    "demo": "webpack-dev-server --open --mode development",
+    "web": "npm run development",
+    "gitbook": "cd docs && rm -rf _book && gitbook build && tar -czvf _book/dcos-terminus@react-native-web.tar.gz -C _book . && curl -XPOST --progress-bar --header \"Content-type:multipart/form-data\" --netrc-file ~/.netrc -F docTar=@_book/dcos-terminus@react-native-web.tar.gz doc-uploader.app.terminus.io/upload | tee /dev/null",
+    "ios": "react-native run-ios --simulator \"iPhone X\"",
+    "android": "cd android && ./gradlew clean installDebug -DENV_SWITCH=1",
+    "androidRelease": "cd android && ./gradlew clean assembleRelease",
+    "development": "webpack --progress --color --watch -p --mode development",
+    "build-web": "webpack --no-progress --color -p --mode production",
+    "build": "git submodule update --init --recursive && npm run build-server && npm run build-web && npm run build-design",
+    "build-design": "webpack --no-progress --color -p --config webpack.design.config.js",
+    "watch-design": "webpack --progress --color --debug -w -d --config webpack.design.config.js",
+    "build-server": "babel rn-b2b2c/server --out-dir public/lib/server",
+    "build-server-watch": "babel rn-b2b2c/server --watch --out-dir public/lib/server &",
+    "herd": "herd Pampasfile-docker.js",
+    "herd-local": "npm run build-server && herd",
+    "herd-watch": "npm run build-server-watch && nodemon --watch public/lib/server --exec 'herd'",
+    "precommit": "lint-staged",
+    "postinstall": "sed -i -e 's/compileOnly/compile/g' node_modules/react-native-gesture-handler/android/build.gradle",
+    "android-clean": "sed -i '' 's/:@terminus\\//:/' android/settings.gradle && sed -i '' 's/:@terminus\\//:/' android/app/build.gradle && cd android && ./gradlew clean"
+  },
+  "dependencies": {
+    "@terminus/react-native-screen-tool": "0.0.2",
+    "@terminus/rn-components": "^3.0.4",
+    "@terminus/trnw-dependences": "^4.0.0",
+    "@terminus/trnw-design": "1.0.0-beta48",
+    "@terminus/trnw-tools": "4.0.0",
+    "@terminus/react-native-social": "file:../",
+    "@terminus/rn-debug": "0.0.4",
+    "react": "16.7.0",
+    "react-native": "0.57.2"
+  },
+  "devDependencies": {
+    "@terminus/trnw-package-tools": "3.0.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
