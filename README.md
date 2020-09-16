@@ -50,20 +50,38 @@
 
   ⑥ 打开 android/app/src/main/java/[...]/MainApplication.java，添加`import com.terminus.emas.RNEmasPackage;`
     在 getPackages() 方法添加`new RNEmasPackage()`
-  
-  
 
-  ⑦ 在app/build.gradle
-      packagingOptions {
-        exclude 'lib/x86/libMotu.so'
-        exclude 'lib/armeabi-v7a/libMotu.so'
-        exclude 'lib/armeabi/libMotu.so'
-      }
-  
+  ⑦ 初始化 
+  * 在android/app/src/main/java/[...]/MainApplication.java中添加`import com.terminus.emas.RNEmasManager;`
+    onCreate方法中添加
+    ```
+    RNEmasManager.setAppVersion("appVersion");      //设置APPversion，上报的字段默认为null
+    RNEmasManager.setAutoTrack(true);               //通过此接口关闭页面自动打点功能
+    RNEmasManager.setOnDebug(true);                 //打开调试日志，线上版本建议关闭
+    RNEmasManager.setChannel("mychannel");          //设置渠道，在init之前调用，如果不关心可以不设置即不调用该接口，渠道设置将影响控制台【渠道分析】栏目的报表展现。
+    RNEmasManager.init(this,getApplicationContext(),"你的APPkey","你的APPsecret");//初始化
 
-  ⑧ 初始化 
-    在android/app/src/main/java/[...]/MainApplication.java中添加`import com.terminus.emas.RNEmasManager;`
-    onCreate方法中添加`RNEmasManager.init(this,getApplicationContext(),"你的APPkey","你的APPsecret");`
+    ```
+
+  * 在android/app/src/main/java/[...]/MainActivity.java中添加`import com.terminus.emas.RNEmasManager;`
+
+    onResume方法中添加
+    ```
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RNEmasManager.onResume(this);
+    }
+    ```
+
+    onPause方法中添加
+    ```
+    @Override
+    protected void onPause() {
+        super.onPause();
+        RNEmasManager.onPause(this);
+    }
+    ```
 
 
 ### IOS

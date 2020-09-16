@@ -8,6 +8,7 @@ import com.facebook.react.ReactActivity;
 import io.terminus.screen.utils.ScreenUtils;
 
 import com.env.EnvSwitchConfig;
+import com.terminus.emas.RNEmasManager;
 import com.trnwapptemplate.utils.CrashUtil;
 import com.trnwapptemplate.utils.NetInfoHandler;
 import com.trnwapptemplate.utils.NetInfoUtil;
@@ -64,8 +65,14 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        RNEmasManager.onResume(this);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        RNEmasManager.onPause(this);
+    }
 
     @Override
     protected void onDestroy() {
