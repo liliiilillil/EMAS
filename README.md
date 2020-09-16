@@ -14,8 +14,19 @@
     ``` 
   ③ 在 android/app/build.gradle 中的 dependencies 模块中添加
     `implementation project(':react-native-emas')`
+    并在android模块中添加
+    ```
+    android{
+      packagingOptions {
+        exclude 'lib/x86/libMotu.so'
+        exclude 'lib/armeabi-v7a/libMotu.so'
+        exclude 'lib/armeabi/libMotu.so'
+      }
+    }
+    ```
+    
 
-  ④ 项目build.gradle中添加Maven仓库地址：
+  ④ android/build.gradle中添加Maven仓库地址：
     ```
     allprojects {
         repositories {
@@ -29,7 +40,6 @@
   ⑤ 在项目的AndroidManifest.xml中添加权限
     ```
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -43,15 +53,15 @@
   
   
 
-  ??
+  ⑦ 在app/build.gradle
       packagingOptions {
         exclude 'lib/x86/libMotu.so'
         exclude 'lib/armeabi-v7a/libMotu.so'
         exclude 'lib/armeabi/libMotu.so'
-    }
+      }
   
 
-  ⑥ 初始化 
+  ⑧ 初始化 
     在android/app/src/main/java/[...]/MainApplication.java中添加`import com.terminus.emas.RNEmasManager;`
     onCreate方法中添加`RNEmasManager.init(this,getApplicationContext(),"你的APPkey","你的APPsecret");`
 
