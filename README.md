@@ -142,6 +142,8 @@
 
 ### 使用范例
     ```
+  import { onSignUp, onLogin, onLogout, onPageEnd, onPageStart, onEvent } from '@terminus/react-native-emas'
+
     <View>
           <Button title={'SignUp'} onPress={()=>onSignUp("singuptest")}/>
           <Button title={'Login'} onPress={()=>onLogin("userNick","12345")}/>
