@@ -1,0 +1,28 @@
+{
+  "presets": ["module:metro-react-native-babel-preset"],
+  "plugins": [
+    ["import", { "libraryName": "@terminus/mall-base", "libraryDirectory": "es" }, "@terminus/mall-base"],
+    ["import", { "libraryName": "@terminus/mall-utils", "libraryDirectory": "es" }, "@terminus/mall-utils"],
+    [
+      "module-resolver",
+      {
+        "root": ["./src/components", "./", "./src", "./node_modules/@terminus/"],
+        "extensions": [
+          ".scss",
+          ".less",
+          ".android.jsx",
+          ".android.js",
+          ".ios.jsx",
+          ".ios.js",
+          ".native.jsx",
+          ".native.js",
+          ".jsx",
+          ".js",
+          ".tsx",
+          ".ts",
+          ".json"
+        ]
+      }
+    ]
+  ]
+}

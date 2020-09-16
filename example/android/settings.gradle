@@ -1,0 +1,35 @@
+rootProject.name = 'TRNWAppTemplate'
+include ':react-native-screens'
+project(':react-native-screens').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-screens/android')
+include ':react-native-reanimated'
+project(':react-native-reanimated').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-reanimated/android')
+include ':react-native-webview'
+project(':react-native-webview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview/android')
+include ':react-native-svg'
+project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
+include ':react-native-image-picker'
+project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/@terminus/react-native-image-picker/android')
+include ':react-native-camera'
+project(':react-native-camera').projectDir = new File(rootProject.projectDir, '../node_modules/@terminus/react-native-camera/android')
+include ':react-native-cookies'
+project(':react-native-cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@terminus/react-native-cookies/android')
+include ':trnw-toast'
+project(':trnw-toast').projectDir = new File(rootProject.projectDir, '../node_modules/@terminus/trnw-toast/android')
+include ':react-native-gesture-handler'
+project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-gesture-handler/android')
+include ':react-native-screen-tool'
+project(':react-native-screen-tool').projectDir = new File(rootProject.projectDir, '../node_modules/@terminus/react-native-screen-tool/android')
+include ':rn-debug'
+project(':rn-debug').projectDir = new File(rootProject.projectDir, '../node_modules/@terminus/rn-debug/android/debug')
+//
+include ':rn-env'
+project(':rn-env').projectDir = new File(rootProject.projectDir, '../node_modules/@terminus/rn-debug/android/env')
+
+include ':react-native-community-netinfo'
+project(':react-native-community-netinfo').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/netinfo/android')
+
+include ':react-native-emas'
+project(':react-native-emas').projectDir = new File(rootProject.projectDir, '../node_modules/@terminus/react-native-emas/android')
+//apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+
+include ':app'

@@ -1,0 +1,39 @@
+def getLoaclDebugKeystoreProperties(){
+    def keystorePropertiesFile = rootProject.file("keystore.properties")
+    if(!file(keystorePropertiesFile).exists()) {
+        String defaultInfo = 
+        "debugSignAlias=app"+ "\n" +                   // 签名别名
+        "debugSignKeyPwd=Coj+1t6egtTvsvsA" + "\n" +     // 别名密码
+        "debugSignStorePwd=Coj+1t6egtTvsvsA"+ "\n" +   // 签名密码
+        "debugSignFile=../keystores/default.keystore" // 签名文件路径
+        file(keystorePropertiesFile).write(defaultInfo,true)
+    }
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    return keystoreProperties
+}
+
+def keystoreProperties = getLoaclDebugKeystoreProperties()
+
+def getStoreInfoExtOrDefault(key,defaultValue) {
+    return System.properties.getProperty(key) ? System.properties.getProperty(key) : defaultValue
+}
+
+/*
+Release: 生产签名信息
+Debug: 开发签名信息
+
+取值
+1. 优先取构建参数中 对应的值
+2. 默认取default.keystore 签名信息
+*/
+project.ext.sign = [
+  ReleaseSignAlias: getStoreInfoExtOrDefault('ReleaseSignAlias', keystoreProperties['debugSignAlias']),
+  ReleaseSignKeyPwd: getStoreInfoExtOrDefault('ReleaseSignKeyPwd', keystoreProperties['debugSignKeyPwd']),
+  ReleaseSignStorePwd : getStoreInfoExtOrDefault('ReleaseSignStorePwd', keystoreProperties['debugSignStorePwd']),
+  ReleaseSignFile : getStoreInfoExtOrDefault('ReleaseSignFile', keystoreProperties['debugSignFile']),
+  DebugSignAlias : getStoreInfoExtOrDefault('DebugSignAlias', keystoreProperties['debugSignAlias']),
+  DebugSignKeyPwd : getStoreInfoExtOrDefault('DebugSignKeyPwd', keystoreProperties['debugSignKeyPwd']),
+  DebugSignStorePwd : getStoreInfoExtOrDefault('DebugSignStorePwd', keystoreProperties['debugSignStorePwd']),
+  DebugSignFile : getStoreInfoExtOrDefault('DebugSignFile', keystoreProperties['debugSignFile']),
+]
