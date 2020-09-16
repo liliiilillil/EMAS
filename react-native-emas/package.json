@@ -1,0 +1,21 @@
+{
+  "name": "@terminus/react-native-emas",
+  "version": "1.0.0-beta.1",
+  "description": "emas tool",
+  "main": "index.ts",
+  "file": [
+    "android",
+    "ios",
+    "index.ts"
+  ],
+  "scripts": {
+    "compile": "rm -rf android/build",
+    "prepublish": "npm run compile",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.terminus.io:reactnative_components/react-native-umeng.git"
+  },
+  "author": "lhd"
+}
