@@ -31,11 +31,17 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void onSignUp(String usernick) {
+        if (usernick==null){
+            return;
+        }
         manService.getMANAnalytics().userRegister(usernick);
     }
 
     @ReactMethod
     public void onLogin(String usernick, String userId) {
+        if (userId==null||usernick==null){
+            return;
+        }
         manService.getMANAnalytics().updateUserAccount(usernick, userId);
     }
 
