@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@git.terminus.io:reactnative_components/react-native-umeng.git"
+    "url": "https://terminus-org.app.terminus.io/wb/mobile/react-native-emas"
   },
   "author": "lhd"
 }
