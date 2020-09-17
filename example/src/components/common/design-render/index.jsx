@@ -6,8 +6,8 @@ export function Design(props) {
   return (
     
     <View>
-      <Button title={'SignUp'} onPress={()=>onSignUp("singuptest")}/>
-      <Button title={'Login'} onPress={()=>onLogin("userNick","12345")}/>
+      <Button title={'SignUp'} onPress={()=>onSignUp("userNick1")}/>
+      <Button title={'Login'} onPress={()=>onLogin("userNick1","012345")}/>
       <Button title={'Logout'} onPress={()=>onLogout()}/>
       <Button title={'PageStart'} onPress={()=>onPageStart()}/>
       <Button title={'PageEnd'} onPress={()=>onPageEnd()}/>

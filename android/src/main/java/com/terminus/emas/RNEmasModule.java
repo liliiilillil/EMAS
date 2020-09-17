@@ -3,6 +3,7 @@ package com.terminus.emas;
 import com.alibaba.sdk.android.man.MANHitBuilders;
 import com.alibaba.sdk.android.man.MANService;
 import com.alibaba.sdk.android.man.MANServiceProvider;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -30,19 +31,21 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onSignUp(String usernick) {
-        if (usernick==null){
+    public void onSignUp(String usernick, Promise promise) {
+        if (usernick == null) {
+            promise.reject(new Throwable("error!,userNick=null!"));
             return;
         }
         manService.getMANAnalytics().userRegister(usernick);
     }
 
     @ReactMethod
-    public void onLogin(String usernick, String userId) {
-        if (userId==null||usernick==null){
+    public void onLogin(String userNick, String userId, Promise promise) {
+        if (userId == null || userNick == null) {
+            promise.reject(new Throwable("error!,userNick=null||userId=null!"));
             return;
         }
-        manService.getMANAnalytics().updateUserAccount(usernick, userId);
+        manService.getMANAnalytics().updateUserAccount(userNick, userId);
     }
 
     @ReactMethod
@@ -61,8 +64,9 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onEvent(ReadableMap args) {
+    public void onEvent(ReadableMap args, Promise promise) {
         if (args == null) {
+            promise.reject(new Throwable("error!,args=null!"));
             return;
         }
         String eventLabel;
@@ -73,6 +77,9 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
         if (args.hasKey(EVENT_LABEL)) {
             eventLabel = args.getString(EVENT_LABEL);
             hitBuilder = new MANHitBuilders.MANCustomHitBuilder(eventLabel);
+        } else {
+            promise.reject(new Throwable("error!,eventLabel=null!"));
+            return;
         }
         if (args.hasKey(EVENT_PAGE)) {
             eventPage = args.getString(EVENT_PAGE);
