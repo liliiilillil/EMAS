@@ -12,8 +12,13 @@ import com.alibaba.sdk.android.man.MANServiceProvider;
 
 public class RNEmasManager {
 
-    public static void init(Application application, Context context, String appKey, String appSecret) {
+    private static String APPKEY_NAME = "EMAS_APPKEY";
+    private static String APPSECRET_NAME = "EMAS_APPSECRET";
+
+    public static void init(Application application, Context context) {
         MANService manService = MANServiceProvider.getService();
+        String appKey=getAppKeyFromManifest(application);
+        String appSecret=getAppSecretFromManifest(application);
         manService.getMANAnalytics().init(application, context, appKey, appSecret);
     }
 
@@ -44,7 +49,7 @@ public class RNEmasManager {
         MANService manService = MANServiceProvider.getService();
         manService.getMANAnalytics().setAppVersion(version);
     }
-    
+
     public static void onPause(Activity activity) {
         MANService manService = MANServiceProvider.getService();
         manService.getMANPageHitHelper().pageDisAppear(activity);
@@ -53,6 +58,25 @@ public class RNEmasManager {
     public static void onResume(Activity activity) {
         MANService manService = MANServiceProvider.getService();
         manService.getMANPageHitHelper().pageAppear(activity);
+    }
+    private static String getAppKeyFromManifest(Application application){
+        try{
+            ApplicationInfo applicationInfo = application.getPackageManager().getApplicationInfo(application.getPackageName(), PackageManager.GET_META_DATA);
+            return applicationInfo.metaData.getString(APPKEY_NAME);
+        }catch (Throwable e) {
+            //e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static String getAppSecretFromManifest(Application application){
+        try{
+            ApplicationInfo applicationInfo = application.getPackageManager().getApplicationInfo(application.getPackageName(), PackageManager.GET_META_DATA);
+            return applicationInfo.metaData.getString(APPSECRET_NAME);
+        }catch (Throwable e) {
+            //e.printStackTrace();
+        }
+        return null;
     }
 
 }
