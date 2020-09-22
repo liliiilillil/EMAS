@@ -121,10 +121,16 @@
     用户注册时调用，传入参数为用户名
 
 ### onLogin
-    用户登录时调用，传入参数为用户名和用户id
+    用户登录时调用，传入参数为用户名和用户ID
 
 ### onLogout
     用户注销时调用，无需传参
+
+### onPageStart
+    进入页面时调用，传入参数为当前页面名称（String类型）
+
+## onPageEnd
+    离开页面时调用，传入参数为当前页面名称（String类型），与onPageStart配对使用，页面名称与onPageStart传入的页面名称相同，调用该方法将自动上传页面名称和页面停留时间
 
 ### onPageInfo
     手动页面埋点，传入参数为: pageName(必要):页面名称，String类型

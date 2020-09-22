@@ -1,5 +1,7 @@
 package com.terminus.emas;
 
+import android.os.SystemClock;
+
 import com.alibaba.sdk.android.man.MANHitBuilders;
 import com.alibaba.sdk.android.man.MANPageHitBuilder;
 import com.alibaba.sdk.android.man.MANService;
@@ -12,7 +14,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
 
-import static com.facebook.react.bridge.ReadableType.Map;
+import java.util.Stack;
 
 
 public class RNEmasModule extends ReactContextBaseJavaModule {
@@ -21,7 +23,8 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
     private final String EVENT_PROPERTIES = "properties";
     private final String EVENT_PAGE = "eventPage";
     private final String EVENT_DURATION = "eventDuration";
-
+    Stack stack = new Stack();
+    Stack timeStack = new Stack();
     MANService manService = MANServiceProvider.getService();
 
     public RNEmasModule(ReactApplicationContext reactContext) {
@@ -57,7 +60,32 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onPageInfo(ReadableMap args,Promise promise) {
+    public void onPageStart(String pageName) {
+        long startMilliSeconds = SystemClock.elapsedRealtime();
+        stack.push(pageName);
+        timeStack.push(startMilliSeconds);
+    }
+
+    @ReactMethod
+    public void onPageEnd(String pageName, Promise promise) {
+        if (stack.pop().toString().equals(pageName)) {
+            long endtMilliSeconds = SystemClock.elapsedRealtime();
+            long startMilliSeconds = (long) timeStack.pop();
+            long duration = endtMilliSeconds - startMilliSeconds;
+            MANPageHitBuilder pageHitBuilder;
+            pageHitBuilder = new MANPageHitBuilder(pageName);
+            pageHitBuilder.setReferPage(pageName);
+            pageHitBuilder.setDurationOnPage(duration);
+            pageHitBuilder.build();
+            manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
+        } else {
+            promise.reject("wrong pageName");
+            return;
+        }
+    }
+
+    @ReactMethod
+    public void onPageInfo(ReadableMap args, Promise promise) {
         if (args == null) {
             promise.reject(new Throwable("error!,args=null!"));
             return;
