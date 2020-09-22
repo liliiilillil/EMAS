@@ -65,7 +65,7 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
     long *duration =[options[@"duration"] longValue];
     NSDictionary *properties = options[@"properties"];
     NSDictionary *globalProperty = options[@"globalProperty"];
-    NSString *removeGlobalProperty = options[@"removeGlobalProperty"];
+    NSArray *removeGlobalProperty = options[@"removeGlobalProperty"];
     if(pageName == nil) {
         reject(@"error",@"pageName=null!",nil);
         return;
@@ -101,8 +101,11 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
                 [tracker setGlobalProperty:key value:value];
                 　　}
     }
-    if (removeGlobalProperty!=nil) {
-        [tracker removeGlobalProperty:removeGlobalProperty];
+    if (removeGlobalProperty!=nil&&[removeGlobalProperty count]) {
+        int count=removeGlobalProperty.count;
+        for (int i=0; i<count; i++) {
+            [tracker removeGlobalProperty:[removeGlobalProperty objectAtIndex:i]];
+        }
     }
     // 组装日志并发送
     [tracker send:[pageHitBuilder build]];
@@ -135,32 +138,6 @@ RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)
     }
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
     [man userRegister:userNick];
-}
-
-//页面开始
-RCT_EXPORT_METHOD(onPageStart)
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController * rootVc = [UIApplication sharedApplication].keyWindow.rootViewController;
-        if ([rootVc isKindOfClass:[UINavigationController class]]) {
-            UINavigationController * vc =  (UINavigationController*)rootVc;
-            rootVc = vc.topViewController;
-        }
-        [[ALBBMANPageHitHelper getInstance] pageAppear:rootVc];
-    });
-}
-
-//页面结束
-RCT_EXPORT_METHOD(onPageEnd)
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController * rootVc = [UIApplication sharedApplication].keyWindow.rootViewController;
-        if ([rootVc isKindOfClass:[UINavigationController class]]) {
-            UINavigationController * vc =  (UINavigationController*)rootVc;
-            rootVc = vc.topViewController;
-        }
-        [[ALBBMANPageHitHelper getInstance] pageDisAppear:rootVc];
-    });
 }
 
 + (BOOL)requiresMainQueueSetup

@@ -25,7 +25,6 @@
     }
     ```
     
-
   ④ android/build.gradle中添加Maven仓库地址：
     ```
     allprojects {
@@ -86,7 +85,6 @@
     }
     ```
 
-
 ### IOS
   ② 在Pods下的Podfile中添加
     ```
@@ -95,7 +93,6 @@
 
     `pod 'react-native-emas', :path => '../node_modules/@terminus/react-native-emas/react-native-emas.podspec'`
     ```
-
 
   ③在控制台产品概览页面，下载App的配置文件AliyunEmasServices-Info.plist，如下图所示：
   ![](./image/AliyunEmasInfoplist.png)
@@ -114,7 +111,6 @@
         }
     ```
 
-
 ## 使用
 
   `import { onSignUp, onLogin, onLogout, onPageInfo, onEvent } from '@terminus/react-native-emas'`
@@ -129,26 +125,28 @@
     用户注销时调用，无需传参
 
 ### onPageInfo
-    手动页面埋点，传入参数为: pageName(必要):页面名称，string类型
-                          referPageName:关联的页面名称，string类型
+    手动页面埋点，传入参数为: pageName(必要):页面名称，String类型
+                          referPageName:关联的页面名称，String类型
                           duration:页面停留时间，number类型
-                          properties:其余自定义属性，map类型
+                          properties:其余自定义属性，Map<String,String>类型
+                          globalProperty:IOS专用，设置全局字段，map<String,String>类型
+                          removeGlobalProperty：IOS专用，删除全局字段，值为globalProperty中的key，Array<String>类型
 
 ### onEvent
-    自定义事件，传入参数为: eventLabel(必要):string类型，只能为字母、数字和下划线组成
-                        eventPage:关联的页面名称，string类型
+    自定义事件，传入参数为: eventLabel(必要):String类型，只能为字母、数字和下划线组成
+                        eventPage:关联的页面名称，String类型
                         eventDuration:页面停留时间，number类型
-                        properties:其余自定义属性，map类型
+                        properties:其余自定义属性，map<String,String>类型
 
 ### 使用范例
     ```
   import { onSignUp, onLogin, onLogout, onPageInfo, onEvent } from '@terminus/react-native-emas'
 
     <View>
-          <Button title={'SignUp'} onPress={()=>onSignUp("singuptest")}/>
-          <Button title={'Login'} onPress={()=>onLogin("userNick","12345")}/>
-          <Button title={'Logout'} onPress={()=>onLogout()}/>
-          <Button title={'onPageInfo'} onPress={()=>onPageInfo({pageName:"myTestPage",referPageName:"myReferPageName",duration:200,properties:{gender:"male",height:"182"}})}/>
-          <Button title={'onEvent'} onPress={()=>onEvent({eventLabel:"label",eventPage:"eventPage",eventDuration:300,properties:{type:"rock",language:"cn"}})}/>
+      <Button title={'SignUp'} onPress={()=>onSignUp("singuptest")}/>
+      <Button title={'Login'} onPress={()=>onLogin("userNick","12345")}/>
+      <Button title={'Logout'} onPress={()=>onLogout()}/>
+      <Button title={'onPageInfo'} onPress={()=>onPageInfo({pageName:"myTestPage",referPageName:"myReferPageName",duration:200,properties:{gender:"male",height:"182"},globalProperty:{key:"value"},removeGlobalProperty:["firstKey","secondKey","thirdKey"]})}/>
+      <Button title={'onEvent'} onPress={()=>onEvent({eventLabel:"label",eventPage:"eventPage",eventDuration:300,properties:{type:"rock",language:"cn"}})}/>
     </View>
     ```
