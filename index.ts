@@ -8,7 +8,14 @@ export interface EventParams{
     eventPage:String,
     eventDuration:Number,
     properties:Map<String,String>
-  }
+}
+
+export interface PageInfoParams{
+  pageName:String,
+  referPageName:String,
+  duration:Number,
+  properties:Map<String,String>
+}
 
 const onSignUp=(usernick:string)=>{
     if(RNEmasModule){
@@ -38,17 +45,9 @@ const onLogout=()=>{
     }   
 }
 
-const onPageStart=()=>{
+const onPageInfo=(params:PageInfoParams)=>{
     if(RNEmasModule){
-      return RNEmasModule.onPageStart();
-    }else{
-      Promise.reject("error!Module doesn't exist!")
-    }   
-}
-
-const onPageEnd=()=>{
-    if(RNEmasModule){
-      return RNEmasModule.onPageEnd();
+      return RNEmasModule.onPageInfo(params);
     }else{
       Promise.reject("error!Module doesn't exist!")
     }   
@@ -61,4 +60,4 @@ const onEvent=(params:EventParams)=>{
       Promise.reject("error!Module doesn't exist!")
     }   
 }
-export{ onSignUp, onLogin, onLogout, onPageEnd, onPageStart, onEvent }
+export{ onSignUp, onLogin, onLogout, onPageInfo, onEvent }
