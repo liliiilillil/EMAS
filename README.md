@@ -48,7 +48,7 @@
     ···
     <application>
       <meta-data android:name="ALIYUN_MAN_CHANNEL" android:value="你的渠道" ></meta-data>
-      <meta-data android:name="EMAS_APPKEY" android:value="\你的AppKey（\不能省略）"></meta-data>
+      <meta-data android:name="EMAS_APPKEY" android:value="\你的AppKey（\符号不能省略）"></meta-data>
       <meta-data android:name="EMAS_APPSECRET" android:value="你的APPsecret"></meta-data>
     </application>
     ```
@@ -107,6 +107,8 @@
         - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
         {
             ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
+            [man turnOnDebug];  //打开调试日志，线上版本建议关闭
+            [man setChannel:@"你的渠道"];   //设置渠道（用以标记该app的分发渠道名称），如果不关心可以不设置即不调用该接口，渠道设置将影响控制台【渠道分析】栏目的报表展现。
             [man autoInit];
         }
     ```
