@@ -11,7 +11,7 @@ export function Design(props) {
       <Button title={'Logout'} onPress={()=>onLogout()}/>
       {/* <Button title={'PageStart'} onPress={()=>onPageStart()}/>
       <Button title={'PageEnd'} onPress={()=>onPageEnd()}/> */}
-      <Button title={'onPageInfo'} onPress={()=>onPageInfo({pageName:"myTestPage",referPageName:"myReferPageName",duration:200,properties:{gender:"male",height:"182"}})}/>
+      <Button title={'onPageInfo'} onPress={()=>onPageInfo({pageName:"myTestPage",referPageName:"myReferPageName",duration:200,globalProperty:{key:"value"},properties:{gender:"male",height:"182"}})}/>
       <Button title={'onEvent'} onPress={()=>onEvent({eventLabel:"label",eventPage:"eventPage",eventDuration:300,properties:{type:"rock",language:"cn"}})}/>
     </View>
   )        

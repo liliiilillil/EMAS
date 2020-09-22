@@ -55,6 +55,60 @@ RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
     [traker send:dic];
 }
 
+RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(__unused RCTPromiseRejectBlock)reject)
+{
+    ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
+    NSString *pageName = options[@"pageName"];
+    NSString *referPageName = options[@"referPageName"];
+    long *duration =[options[@"duration"] longValue];
+    NSDictionary *properties = options[@"properties"];
+    NSDictionary *globalProperty = options[@"globalProperty"];
+    NSString *removeGlobalProperty = options[@"removeGlobalProperty"];
+    if(pageName == nil) {
+        reject(@"error",@"pageName=null!",nil);
+        return;
+    }
+    [pageHitBuilder setReferPage:referPageName];
+    [pageHitBuilder setPageName:pageName];
+    [pageHitBuilder setDurationOnPage:duration];
+    if(properties != nil && [properties count]) {
+        NSArray *keys;
+        int i, count;
+        id key, value;
+        keys = [properties allKeys];
+        count = [keys count];
+        for (i = 0; i < count; i++)
+            　　{
+                　　　　key = [keys objectAtIndex: i];
+                　　　　value = [properties objectForKey: key];
+                [pageHitBuilder setProperty:key value:value];
+                　　}
+    }
+    
+    ALBBMANTracker *tracker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
+    if (globalProperty!=nil&&[globalProperty count]) {
+        NSArray *keys;
+        int i, count;
+        id key, value;
+        keys = [properties allKeys];
+        count = [keys count];
+        for (i = 0; i < count; i++)
+            　　{
+                　　　　key = [keys objectAtIndex: i];
+                　　　　value = [properties objectForKey: key];
+                [tracker setGlobalProperty:key value:value];
+                　　}
+    }
+    if (removeGlobalProperty!=nil) {
+        [tracker removeGlobalProperty:removeGlobalProperty];
+    }
+    // 组装日志并发送
+    [tracker send:[pageHitBuilder build]];
+    
+}
+
 //登录
 RCT_EXPORT_METHOD(onLogin:(NSString *)userNick userid:(NSString *)userId resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
 {
@@ -109,4 +163,8 @@ RCT_EXPORT_METHOD(onPageEnd)
     });
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;  // only do this if your module initialization relies on calling UIKit!
+}
 @end
