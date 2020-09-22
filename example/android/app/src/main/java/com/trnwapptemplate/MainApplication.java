@@ -91,7 +91,7 @@ public class MainApplication extends Application implements ReactApplication {
     RNEmasManager.setAppVersion("1.0.0");
     RNEmasManager.setAutoTrack(true);
     RNEmasManager.setOnDebug(true);
-    RNEmasManager.init(this,getApplicationContext());
+    RNEmasManager.init(this);
   }
 
   @Override

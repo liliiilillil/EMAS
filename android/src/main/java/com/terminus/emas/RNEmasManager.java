@@ -15,10 +15,11 @@ public class RNEmasManager {
     private static String APPKEY_NAME = "EMAS_APPKEY";
     private static String APPSECRET_NAME = "EMAS_APPSECRET";
 
-    public static void init(Application application, Context context) {
+    public static void init(Application application) {
         MANService manService = MANServiceProvider.getService();
         String appKey=getAppKeyFromManifest(application);
         String appSecret=getAppSecretFromManifest(application);
+        Context context=application.getApplicationContext();
         manService.getMANAnalytics().init(application, context, appKey, appSecret);
     }
 
