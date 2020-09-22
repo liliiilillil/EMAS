@@ -1,6 +1,7 @@
 package com.terminus.emas;
 
 import com.alibaba.sdk.android.man.MANHitBuilders;
+import com.alibaba.sdk.android.man.MANPageHitBuilder;
 import com.alibaba.sdk.android.man.MANService;
 import com.alibaba.sdk.android.man.MANServiceProvider;
 import com.facebook.react.bridge.Promise;
@@ -10,6 +11,8 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
+
+import static com.facebook.react.bridge.ReadableType.Map;
 
 
 public class RNEmasModule extends ReactContextBaseJavaModule {
@@ -54,14 +57,44 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onPageStart() {
-        manService.getMANPageHitHelper().pageAppear(getCurrentActivity());
+    public void onPageInfo(ReadableMap args,Promise promise) {
+        if (args == null) {
+            promise.reject(new Throwable("error!,args=null!"));
+            return;
+        }
+        String pageName;
+        String referPageName;
+        long duration;
+        MANPageHitBuilder pageHitBuilder;
+        if (args.hasKey("pageName")) {
+            pageName = args.getString("pageName");
+            pageHitBuilder = new MANPageHitBuilder(pageName);
+        } else {
+            promise.reject(new Throwable("error!,pageName=null!"));
+            return;
+        }
+        if (args.hasKey("referPageName")) {
+            referPageName = args.getString("referPageName");
+            pageHitBuilder.setReferPage(referPageName);
+        }
+        if (args.hasKey("duration")) {
+            duration = (long) args.getDouble("duration");
+            pageHitBuilder.setDurationOnPage(duration);
+        }
+        if (args.hasKey("properties")) {
+            ReadableMap map = args.getMap("properties");
+            ReadableMapKeySetIterator iterator = map.keySetIterator();
+            while (iterator.hasNextKey()) {
+                String key = iterator.nextKey();
+                if (map.getType(key) == ReadableType.String) {
+                    pageHitBuilder.setProperty(key, map.getString(key));
+                }
+            }
+        }
+        pageHitBuilder.build();
+        MANServiceProvider.getService().getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
     }
 
-    @ReactMethod
-    public void onPageEnd() {
-        manService.getMANPageHitHelper().pageDisAppear(getCurrentActivity());
-    }
 
     @ReactMethod
     public void onEvent(ReadableMap args, Promise promise) {

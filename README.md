@@ -117,7 +117,7 @@
 
 ## 使用
 
-  `import { onSignUp, onLogin, onLogout, onPageEnd, onPageStart, onEvent } from '@terminus/react-native-emas'`
+  `import { onSignUp, onLogin, onLogout, onPageInfo, onEvent } from '@terminus/react-native-emas'`
 
 ### onSignUp
     用户注册时调用，传入参数为用户名
@@ -128,11 +128,11 @@
 ### onLogout
     用户注销时调用，无需传参
 
-### onPageStart
-    进入页面时调用，无需传参
-
-### onPageEnd
-    离开页面时调用，无需传参
+### onPageInfo
+    手动页面埋点，传入参数为: pageName(必要):页面名称，string类型
+                          referPageName:关联的页面名称，string类型
+                          duration:页面停留时间，number类型
+                          properties:其余自定义属性，map类型
 
 ### onEvent
     自定义事件，传入参数为: eventLabel(必要):string类型，只能为字母、数字和下划线组成
@@ -142,14 +142,13 @@
 
 ### 使用范例
     ```
-  import { onSignUp, onLogin, onLogout, onPageEnd, onPageStart, onEvent } from '@terminus/react-native-emas'
+  import { onSignUp, onLogin, onLogout, onPageInfo, onEvent } from '@terminus/react-native-emas'
 
     <View>
           <Button title={'SignUp'} onPress={()=>onSignUp("singuptest")}/>
           <Button title={'Login'} onPress={()=>onLogin("userNick","12345")}/>
           <Button title={'Logout'} onPress={()=>onLogout()}/>
-          <Button title={'PageStart'} onPress={()=>onPageStart()}/>
-          <Button title={'PageEnd'} onPress={()=>onPageEnd()}/>
+          <Button title={'onPageInfo'} onPress={()=>onPageInfo({pageName:"myTestPage",referPageName:"myReferPageName",duration:200,properties:{gender:"male",height:"182"}})}/>
           <Button title={'onEvent'} onPress={()=>onEvent({eventLabel:"label",eventPage:"eventPage",eventDuration:300,properties:{type:"rock",language:"cn"}})}/>
     </View>
     ```
