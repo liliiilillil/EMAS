@@ -16,6 +16,7 @@ import com.facebook.react.bridge.ReadableType;
 
 import java.util.Stack;
 
+
 public class RNEmasModule extends ReactContextBaseJavaModule {
     private final String MODULE_NAME = "RNEmasModule";
     private final String EVENT_LABEL = "eventLabel";
@@ -60,6 +61,9 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void onPageStart(String pageName) {
+        if (pageName==null){
+            return;
+        }
         long startMilliSeconds = SystemClock.elapsedRealtime();
         stack.push(pageName);
         timeStack.push(startMilliSeconds);
@@ -67,6 +71,10 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void onPageEnd(String pageName, Promise promise) {
+        if (pageName==null){
+            promise.reject(new Throwable("pageName==null"));
+            return;
+        }
         if (stack.pop().toString().equals(pageName)) {
             long endMilliSeconds = SystemClock.elapsedRealtime();
             long startMilliSeconds = (long) timeStack.pop();
