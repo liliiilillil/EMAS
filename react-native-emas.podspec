@@ -19,10 +19,10 @@ Pod::Spec.new do |s|
                             beautiful and fast products with no compromises in
                             quality or capability.
                          DESC
-  s.homepage            = "http://git.terminus.io/reactnative_components/react-native-umeng.git"
+  s.homepage            = "https://terminus-org.app.terminus.io/wb/mobile/react-native-emas"
   s.license             = package['license']
   s.author              = "lhd"
-  s.source              = { :git => "git@git.terminus.io:reactnative_components/react-native-umeng.git"}
+  s.source              = { :git => "https://terminus-org.app.terminus.io/wb/mobile/react-native-emas"}
   s.requires_arc        = true
   s.platform            = :ios, "7.0"
   s.preserve_paths      = "*.framework"

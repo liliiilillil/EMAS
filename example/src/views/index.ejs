@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <title>tmall-app</title>
+    <meta name="description" content="" />
+    <script>window.__DEV__ = true</script>
+  </head>
+
+  <body style="height: 100%">
+    <div id="container" style="height: 100%;width: 100vw;display: flex;"></div>
+    <script>
+      window.fontSize = Math.min(640, document.body.clientWidth) / 18.75;
+      document.getElementsByTagName('html')[0].style.fontSize = (window.fontSize > 25 ? 25 : window.fontSize) + 'px';
+    </script>
+    <!-- <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+    <div id="udesk-hook"></div>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+#示例yml文件 ： 文档参数说明详见：https://docs.terminus.io/dice-docs-3-14/spec/pipeline-yml.html
+#该示例包含了原生App打包的一般流程，请根据项目需求修改流程 1. checkout  2 打包ipa、apk   3 Release  4 publish
+
+# 当前版本
+version: "1.1"
+# 执行列表
+stages:
+  # 第一个stage checkout
+  - stage:
+      - git-checkout:
+          alias: repo
+          params:
+            depth: 1
+            
+  # 第二个stage ：包含 iOS、android打包的action
+  - stage:
+      - ios:
+          params:
+            context: ${repo}
+            commands:
+            # 添加iOS打包命令
+              - trnw-cli build ipa
+            targets:
+              # ios产物需要配置具体文件名称。一般为默认 ${scheme}.ipa
+              # ios目录下 执行 xcodebuild -list -json，即可查看scheme信息
+              - build/output/*.ipa
+      - android:
+          params:
+            context: ${repo}
+            commands:
+             # 添加android打包命令
+             # trnw-cli --help 查看具体使用参数说明
+              - npm install -g @terminus/trnw-cli
+              - npm i
+              - npx jetify
+              - trnw-cli build apk
+            target: android/app/build/outputs
+
+   # 第三个stage ：包含 iOS、android 包装 Rlease 的action
+  - stage:
+      - release:
+          params:
+            release_mobile: 
+                files: 
+                  # ios产物需要配置具体文件名称。一般为默认 ${scheme}.ipa
+                  # ios目录下 执行 xcodebuild -list -json，即可查看scheme信息
+                  - ${ios}/*.ipa
+                  - ${android}/outputs/apk/release/app-release.apk
+
+   # 第四个stage ：包含 iOS、android 发布的action
+  - stage:
+      - mobile-publish:
+          params:
+            release_id: ${release:OUTPUT:releaseID}
+            readme_file: ${repo}/README.md

@@ -21,13 +21,16 @@ RCT_EXPORT_MODULE(RNEmasModule);
     }
 }
 
-RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options)
+RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(__unused RCTPromiseRejectBlock)reject)
 {
     NSString *eventLabel = options[@"eventLabel"];
     NSString *eventPage = options[@"eventPage"];
     long *eventDuration =[options[@"eventDuration"] longValue];
     NSDictionary *properties = options[@"properties"];
     if(eventLabel == nil) {
+        reject(@"error",@"eventLabel=null!",nil);
         return;
     }
     ALBBMANCustomHitBuilder *customBuilder = [[ALBBMANCustomHitBuilder alloc] init];
@@ -36,29 +39,124 @@ RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options)
     [customBuilder setDurationOnEvent:eventDuration];
     if(properties != nil && [properties count]) {
         NSArray *keys;
-         int i, count;
-         id key, value;
-         keys = [properties allKeys];
-         count = [keys count];
-         for (i = 0; i < count; i++)
-        　　{
-         　　　　key = [keys objectAtIndex: i];
-         　　　　value = [properties objectForKey: key];
-         　　　　[customBuilder setProperty:key value:value];
-        　　}
+        int i, count;
+        id key, value;
+        keys = [properties allKeys];
+        count = [keys count];
+        for (i = 0; i < count; i++)
+            　　{
+                　　　　key = [keys objectAtIndex: i];
+                　　　　value = [properties objectForKey: key];
+                　　　　[customBuilder setProperty:key value:value];
+                　　}
     }
     ALBBMANTracker *traker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
     NSDictionary *dic = [customBuilder build];
     [traker send:dic];
 }
 
-//登录
-RCT_EXPORT_METHOD(onLogin:(NSString *)userNick userid:(NSString *)userId)
+RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(__unused RCTPromiseRejectBlock)reject)
 {
+    ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
+    NSString *pageName = options[@"pageName"];
+    NSString *referPageName = options[@"referPageName"];
+    long *duration =[options[@"duration"] longValue];
+    NSDictionary *properties = options[@"properties"];
+    NSDictionary *globalProperty = options[@"globalProperty"];
+    NSArray *removeGlobalProperty = options[@"removeGlobalProperty"];
+    if(pageName == nil) {
+        reject(@"error",@"pageName=null!",nil);
+        return;
+    }
+    [pageHitBuilder setReferPage:referPageName];
+    [pageHitBuilder setPageName:pageName];
+    [pageHitBuilder setDurationOnPage:duration];
+    if(properties != nil && [properties count]) {
+        NSArray *keys;
+        int i, count;
+        id key, value;
+        keys = [properties allKeys];
+        count = [keys count];
+        for (i = 0; i < count; i++)
+            　　{
+                　　　　key = [keys objectAtIndex: i];
+                　　　　value = [properties objectForKey: key];
+                [pageHitBuilder setProperty:key value:value];
+                　　}
+    }
+    ALBBMANTracker *tracker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
+    if (globalProperty!=nil&&[globalProperty count]) {
+        NSArray *keys;
+        int i, count;
+        id key, value;
+        keys = [properties allKeys];
+        count = [keys count];
+        for (i = 0; i < count; i++)
+            　　{
+                　　　　key = [keys objectAtIndex: i];
+                　value = [properties objectForKey: key];
+                [tracker setGlobalProperty:key value:value];
+                　　}
+    }
+    if (removeGlobalProperty!=nil&&[removeGlobalProperty count]) {
+        int count=removeGlobalProperty.count;
+        for (int i=0; i<count; i++) {
+            [tracker removeGlobalProperty:[removeGlobalProperty objectAtIndex:i]];
+        }
+    }
+    [tracker send:[pageHitBuilder build]];
+}
+
+//页面开始
+RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName)
+{
+    _startTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];
+    if (_timeStack==nil) {
+        _timeStack = [NSMutableArray array];
+    }
+    if (_pageStack==nil) {
+        _pageStack = [NSMutableArray array];
+    }
+    _timecount=_timeStack.count;
+    _pagecount=_pageStack.count;
+    [_timeStack insertObject:_startTime atIndex:_timecount];
+    [_pageStack insertObject:pageName atIndex:_pagecount];
+}
+
+RCT_EXPORT_METHOD(onPageEnd:(NSString *)pageName resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
+{
+    if ([pageName isEqual:_pageStack.lastObject]) {
+        NSNumber *endTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];
+        NSNumber *startTime=_timeStack.lastObject;
+        [_pageStack removeLastObject];
+        [_timeStack removeLastObject];
+        NSNumber *durationNumber=[NSNumber numberWithLong:([endTime longValue]-[_startTime longValue])];
+        long *duration =[durationNumber longValue];
+        ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
+        [pageHitBuilder setReferPage:_pageStack.lastObject];
+        [pageHitBuilder setPageName:pageName];
+        [pageHitBuilder setDurationOnPage:duration];
+        ALBBMANTracker *tracker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
+        [tracker send:[pageHitBuilder build]];
+    }else{
+        reject(@"error",@"pageName wrong",nil);
+    }
+}
+
+//登录
+RCT_EXPORT_METHOD(onLogin:(NSString *)userNick userid:(NSString *)userId resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
+{
+    if (userNick==nil||userId==nil) {
+        reject(@"error",@"userNick==null||userId==null",nil);
+        return;
+    }
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
     [man updateUserAccount:userNick userid:userId];
 }
 
+//注销
 RCT_EXPORT_METHOD(onLogout)
 {
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
@@ -66,36 +164,23 @@ RCT_EXPORT_METHOD(onLogout)
 }
 
 //注册
-RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick)
+RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
 {
+    if (userNick==nil) {
+        reject(@"error",@"userNick==null",nil);
+        return;
+    }
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
     [man userRegister:userNick];
 }
-
-//页面开始
-RCT_EXPORT_METHOD(onPageStart)
+- (long)getLaunchSystemTime
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController * rootVc = [UIApplication sharedApplication].keyWindow.rootViewController;
-        if ([rootVc isKindOfClass:[UINavigationController class]]) {
-            UINavigationController * vc =  (UINavigationController*)rootVc;
-            rootVc = vc.topViewController;
-        }
-        [[ALBBMANPageHitHelper getInstance] pageAppear:rootVc];
-    });
+    NSTimeInterval timer_ = [NSProcessInfo processInfo].systemUptime;
+    return timer_;
 }
 
-//页面结束
-RCT_EXPORT_METHOD(onPageEnd)
++ (BOOL)requiresMainQueueSetup
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController * rootVc = [UIApplication sharedApplication].keyWindow.rootViewController;
-        if ([rootVc isKindOfClass:[UINavigationController class]]) {
-            UINavigationController * vc =  (UINavigationController*)rootVc;
-            rootVc = vc.topViewController;
-        }
-        [[ALBBMANPageHitHelper getInstance] pageDisAppear:rootVc];
-    });
+    return YES;
 }
-
 @end
