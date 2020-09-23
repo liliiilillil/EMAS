@@ -71,7 +71,7 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
         if (stack.pop().toString().equals(pageName)) {
             long endtMilliSeconds = SystemClock.elapsedRealtime();
             long startMilliSeconds = (long) timeStack.pop();
-            long duration = endtMilliSeconds - startMilliSeconds;
+            long duration = (endtMilliSeconds - startMilliSeconds)/1000;
             MANPageHitBuilder pageHitBuilder;
             pageHitBuilder = new MANPageHitBuilder(pageName);
             String referPageName;
