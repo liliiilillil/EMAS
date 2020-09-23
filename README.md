@@ -154,6 +154,10 @@
       <Button title={'SignUp'} onPress={()=>onSignUp("singuptest")}/>
       <Button title={'Login'} onPress={()=>onLogin("userNick","12345")}/>
       <Button title={'Logout'} onPress={()=>onLogout()}/>
+      <Button title={'PageStart1'} onPress={()=>onPageStart("duration test page1")}/>
+      <Button title={'PageEnd1'} onPress={()=>onPageEnd("duration test page1")}/>
+      <Button title={'PageStart2'} onPress={()=>onPageStart("duration test page2")}/>
+      <Button title={'PageEnd2'} onPress={()=>onPageEnd("duration test page2")}/>
       <Button title={'onPageInfo'} onPress={()=>onPageInfo({pageName:"myTestPage",referPageName:"myReferPageName",duration:200,properties:{gender:"male",height:"182"},globalProperty:{key:"value"},removeGlobalProperty:["firstKey","secondKey","thirdKey"]})}/>
       <Button title={'onEvent'} onPress={()=>onEvent({eventLabel:"label",eventPage:"eventPage",eventDuration:300,properties:{type:"rock",language:"cn"}})}/>
     </View>
