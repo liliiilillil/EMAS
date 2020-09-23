@@ -63,4 +63,24 @@ const onEvent=(params:EventParams)=>{
   }   
 }
 
-export{ onSignUp, onLogin, onLogout, onPageInfo, onEvent }
+const onPageStart=(pageName:String)=>{
+  if(RNEmasModule){
+    RNEmasModule.onPageStart(pageName);
+    Promise.resolve("Page Start")
+    return; 
+  }else{
+    Promise.reject("error!Module doesn't exist!")
+  }   
+}
+
+const onPageEnd=(pageName:String)=>{
+  if(RNEmasModule){
+    RNEmasModule.onPageEnd(pageName);
+    Promise.resolve("Page End")
+    return; 
+  }else{
+    Promise.reject("error!Module doesn't exist!")
+  }   
+}
+
+export{ onSignUp, onLogin, onLogout, onPageInfo, onEvent, onPageStart, onPageEnd }

@@ -74,12 +74,18 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
             long duration = endtMilliSeconds - startMilliSeconds;
             MANPageHitBuilder pageHitBuilder;
             pageHitBuilder = new MANPageHitBuilder(pageName);
-            pageHitBuilder.setReferPage(pageName);
+            String referPageName;
+            if (stack.size()!=0){
+                referPageName=stack.peek().toString();
+            }else{
+                referPageName=null;
+            }
+            pageHitBuilder.setReferPage(referPageName);
             pageHitBuilder.setDurationOnPage(duration);
             pageHitBuilder.build();
             manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
         } else {
-            promise.reject("wrong pageName");
+            promise.reject("pageName doesn't match");
             return;
         }
     }
