@@ -25,6 +25,10 @@ RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(__unused RCTPromiseRejectBlock)reject)
 {
+    if(options==nil){
+        reject(@"error",@"options==null",nil);
+        return;
+    }
     NSString *eventLabel = options[@"eventLabel"];
     NSString *eventPage = options[@"eventPage"];
     long *eventDuration =[options[@"eventDuration"] longValue];
@@ -59,6 +63,10 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(__unused RCTPromiseRejectBlock)reject)
 {
+    if(options==nil){
+        reject(@"error",@"options==null",nil);
+        return;
+    }
     ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
     NSString *pageName = options[@"pageName"];
     NSString *referPageName = options[@"referPageName"];
@@ -110,8 +118,12 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
 }
 
 //页面开始
-RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName)
+RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
 {
+    if (pageName==nil) {
+        reject(@"error",@"pageName==null",nil);
+        return;
+    }
     _startTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];
     if (_timeStack==nil) {
         _timeStack = [NSMutableArray array];
@@ -127,6 +139,10 @@ RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName)
 
 RCT_EXPORT_METHOD(onPageEnd:(NSString *)pageName resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
 {
+    if (pageName==nil) {
+        reject(@"error",@"pageName==null",nil);
+        return;
+    }
     if ([pageName isEqual:_pageStack.lastObject]) {
         NSNumber *endTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];
         NSNumber *startTime=_timeStack.lastObject;
@@ -181,6 +197,6 @@ RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)
 
 + (BOOL)requiresMainQueueSetup
 {
-    return YES;
+    return YES;  // only do this if your module initialization relies on calling UIKit!
 }
 @end
