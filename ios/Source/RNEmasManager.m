@@ -86,7 +86,6 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
                 [pageHitBuilder setProperty:key value:value];
                 　　}
     }
-    
     ALBBMANTracker *tracker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
     if (globalProperty!=nil&&[globalProperty count]) {
         NSArray *keys;
@@ -97,7 +96,7 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
         for (i = 0; i < count; i++)
             　　{
                 　　　　key = [keys objectAtIndex: i];
-                　　　　value = [properties objectForKey: key];
+                　value = [properties objectForKey: key];
                 [tracker setGlobalProperty:key value:value];
                 　　}
     }
@@ -107,36 +106,34 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
             [tracker removeGlobalProperty:[removeGlobalProperty objectAtIndex:i]];
         }
     }
-    // 组装日志并发送
     [tracker send:[pageHitBuilder build]];
 }
 
 //页面开始
 RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName)
 {
-    _startTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];//获取当前系统运行时间
+    _startTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];
     if (_timeStack==nil) {
-        _timeStack = [NSMutableArray array];    //未初始化则初始化模拟栈
+        _timeStack = [NSMutableArray array];
     }
     if (_pageStack==nil) {
         _pageStack = [NSMutableArray array];
     }
     _timecount=_timeStack.count;
     _pagecount=_pageStack.count;
-    [_timeStack insertObject:_startTime atIndex:_timecount];    //模拟入栈
+    [_timeStack insertObject:_startTime atIndex:_timecount];
     [_pageStack insertObject:pageName atIndex:_pagecount];
-    
 }
 
 RCT_EXPORT_METHOD(onPageEnd:(NSString *)pageName resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
 {
     if ([pageName isEqual:_pageStack.lastObject]) {
-        NSNumber *endTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];//获取当前时间
-        NSNumber *startTime=_timeStack.lastObject;  //栈顶(数组最后一项)即为配对页面的开始时间
-        [_pageStack removeLastObject];//模拟pop()
+        NSNumber *endTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];
+        NSNumber *startTime=_timeStack.lastObject;
+        [_pageStack removeLastObject];
         [_timeStack removeLastObject];
-        NSNumber *durationNumber=[NSNumber numberWithLong:([endTime longValue]-[_startTime longValue])];//获取时间差
-        long *duration =[durationNumber longValue];     //api要求long格式
+        NSNumber *durationNumber=[NSNumber numberWithLong:([endTime longValue]-[_startTime longValue])];
+        long *duration =[durationNumber longValue];
         ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
         [pageHitBuilder setReferPage:_pageStack.lastObject];
         [pageHitBuilder setPageName:pageName];
@@ -144,7 +141,7 @@ RCT_EXPORT_METHOD(onPageEnd:(NSString *)pageName resolve:(RCTPromiseResolveBlock
         ALBBMANTracker *tracker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
         [tracker send:[pageHitBuilder build]];
     }else{
-        reject(@"error",@"pageName doesn't match",nil);
+        reject(@"error",@"pageName wrong",nil);
     }
 }
 
@@ -176,7 +173,6 @@ RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
     [man userRegister:userNick];
 }
-
 - (long)getLaunchSystemTime
 {
     NSTimeInterval timer_ = [NSProcessInfo processInfo].systemUptime;
@@ -185,6 +181,6 @@ RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)
 
 + (BOOL)requiresMainQueueSetup
 {
-    return YES;  // only do this if your module initialization relies on calling UIKit!
+    return YES;
 }
 @end

@@ -16,7 +16,6 @@ import com.facebook.react.bridge.ReadableType;
 
 import java.util.Stack;
 
-
 public class RNEmasModule extends ReactContextBaseJavaModule {
     private final String MODULE_NAME = "RNEmasModule";
     private final String EVENT_LABEL = "eventLabel";
@@ -69,16 +68,16 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void onPageEnd(String pageName, Promise promise) {
         if (stack.pop().toString().equals(pageName)) {
-            long endtMilliSeconds = SystemClock.elapsedRealtime();
+            long endMilliSeconds = SystemClock.elapsedRealtime();
             long startMilliSeconds = (long) timeStack.pop();
-            long duration = (endtMilliSeconds - startMilliSeconds)/1000;
+            long duration = (endMilliSeconds - startMilliSeconds) / 1000;
             MANPageHitBuilder pageHitBuilder;
             pageHitBuilder = new MANPageHitBuilder(pageName);
             String referPageName;
-            if (stack.size()!=0){
-                referPageName=stack.peek().toString();
-            }else{
-                referPageName=null;
+            if (stack.size() != 0) {
+                referPageName = stack.peek().toString();
+            } else {
+                referPageName = null;
             }
             pageHitBuilder.setReferPage(referPageName);
             pageHitBuilder.setDurationOnPage(duration);
@@ -140,7 +139,6 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
         String eventPage;
         long duration;
         MANHitBuilders.MANCustomHitBuilder hitBuilder = null;
-
         if (args.hasKey(EVENT_LABEL)) {
             eventLabel = args.getString(EVENT_LABEL);
             hitBuilder = new MANHitBuilders.MANCustomHitBuilder(eventLabel);
