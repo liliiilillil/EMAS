@@ -14,16 +14,6 @@
     ``` 
   ③ 在 android/app/build.gradle 中的 dependencies 模块中添加
     `implementation project(':react-native-emas')`
-    并在android模块中添加
-    ```
-    android{
-      packagingOptions {
-        exclude 'lib/x86/libMotu.so'
-        exclude 'lib/armeabi-v7a/libMotu.so'
-        exclude 'lib/armeabi/libMotu.so'
-      }
-    }
-    ```
     
   ④ android/build.gradle中添加Maven仓库地址：
     ```
@@ -60,9 +50,9 @@
   * 在android/app/src/main/java/[...]/MainApplication.java中添加`import com.terminus.emas.RNEmasManager;`
     onCreate方法中添加
     ```
-    RNEmasManager.setAutoTrack(true);               //通过此接口关闭页面自动打点功能
-    RNEmasManager.setOnDebug(true);                 //打开调试日志，线上版本建议关闭
-    RNEmasManager.init(this,getApplicationContext());  //初始化
+    RNEmasManager.turnOffAutoTrack();            //通过此接口关闭页面自动打点功能,不调用默认开启
+    RNEmasManager.turnOnDebug();                 //打开调试日志，线上版本建议关闭,不调用默认关闭
+    RNEmasManager.init(this);                    //初始化
     ```
 
   * 在android/app/src/main/java/[...]/MainActivity.java中添加`import com.terminus.emas.RNEmasManager;`

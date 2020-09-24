@@ -88,9 +88,9 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
     debugToolInit();
-    RNEmasManager.setAppVersion("1.0.0");
-    RNEmasManager.setAutoTrack(true);
-    RNEmasManager.setOnDebug(true);
+
+    RNEmasManager.turnOffAutoTrack();
+    RNEmasManager.turnOnDebug();
     RNEmasManager.init(this);
   }
 

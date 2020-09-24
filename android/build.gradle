@@ -17,7 +17,7 @@ android {
 
 dependencies {
     implementation ("com.facebook.react:react-native:0.61.5") { force = true } // From node_modules
-     compile 'com.aliyun.ams:alicloud-android-man:1.2.0'
+    implementation 'com.aliyun.ams:alicloud-android-man:1.2.0'
 }
 repositories {
     mavenCentral()
