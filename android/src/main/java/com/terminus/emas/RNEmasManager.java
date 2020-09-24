@@ -46,8 +46,8 @@ public class RNEmasManager {
 
     //是否自动打点
     public static void turnOffAutoTrack() {
-        if (manService==null){
-            Log.e("error","Manservice=null");
+        if (manService == null) {
+            Log.e("error", "ManService=null");
             return;
         }
         manService.getMANAnalytics().turnOffAutoPageTrack();
@@ -55,8 +55,8 @@ public class RNEmasManager {
 
     //调试日志
     public static void turnOnDebug() {
-        if (manService==null){
-            Log.e("error","Manservice=null");
+        if (manService == null) {
+            Log.e("error", "ManService=null");
             return;
         }
         manService.getMANAnalytics().turnOnDebug();
@@ -64,7 +64,7 @@ public class RNEmasManager {
 
     //自定义页面信息
     public static void onPageInfo(ReadableMap args, Promise promise) {
-        if (manService==null){
+        if (manService == null) {
             promise.reject(new Throwable("Manservice = null"));
             return;
         }
@@ -107,7 +107,7 @@ public class RNEmasManager {
 
     //自定义事件
     public static void onEvent(ReadableMap args, Promise promise) {
-        if (manService==null){
+        if (manService == null) {
             promise.reject(new Throwable("Manservice = null"));
             return;
         }
@@ -148,8 +148,8 @@ public class RNEmasManager {
     }
 
     //页面开始
-    public static synchronized void onPageStart(String pageName,Promise promise) {
-        if (manService==null){
+    public static synchronized void onPageStart(String pageName, Promise promise) {
+        if (manService == null) {
             promise.reject(new Throwable("Manservice = null"));
             return;
         }
@@ -165,7 +165,7 @@ public class RNEmasManager {
 
     //页面结束
     public static synchronized void onPageEnd(String pageName, Promise promise) {
-        if (manService==null){
+        if (manService == null) {
             promise.reject(new Throwable("Manservice = null"));
             return;
         }
@@ -202,16 +202,16 @@ public class RNEmasManager {
     }
 
     public static void onPause(Activity activity) {
-        if (manService==null){
-            Log.e("error","Manservice=null");
+        if (manService == null) {
+            Log.e("error", "ManService=null");
             return;
         }
         manService.getMANPageHitHelper().pageDisAppear(activity);
     }
 
     public static void onResume(Activity activity) {
-        if (manService==null){
-            Log.e("error","Manservice=null");
+        if (manService == null) {
+            Log.e("error", "ManService=null");
             return;
         }
         manService.getMANPageHitHelper().pageAppear(activity);

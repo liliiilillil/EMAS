@@ -48,8 +48,8 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onPageStart(String pageName,Promise promise) {
-        RNEmasManager.onPageStart(pageName,promise);
+    public void onPageStart(String pageName, Promise promise) {
+        RNEmasManager.onPageStart(pageName, promise);
     }
 
     @ReactMethod

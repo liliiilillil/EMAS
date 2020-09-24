@@ -11,7 +11,6 @@ RCT_EXPORT_MODULE(RNEmasModule);
     [man autoInit];
 }
 
-
 +(void) setDebug:(BOOL)value
 {
     if (value) {
