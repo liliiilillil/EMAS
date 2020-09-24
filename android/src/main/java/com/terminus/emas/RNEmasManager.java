@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.alibaba.sdk.android.man.MANHitBuilders;
 import com.alibaba.sdk.android.man.MANPageHitBuilder;
@@ -45,16 +46,28 @@ public class RNEmasManager {
 
     //是否自动打点
     public static void turnOffAutoTrack() {
+        if (manService==null){
+            Log.e("error","Manservice=null");
+            return;
+        }
         manService.getMANAnalytics().turnOffAutoPageTrack();
     }
 
     //调试日志
     public static void turnOnDebug() {
+        if (manService==null){
+            Log.e("error","Manservice=null");
+            return;
+        }
         manService.getMANAnalytics().turnOnDebug();
     }
 
     //自定义页面信息
     public static void onPageInfo(ReadableMap args, Promise promise) {
+        if (manService==null){
+            promise.reject(new Throwable("Manservice = null"));
+            return;
+        }
         if (args == null) {
             promise.reject(new Throwable("error!,args=null!"));
             return;
@@ -94,6 +107,10 @@ public class RNEmasManager {
 
     //自定义事件
     public static void onEvent(ReadableMap args, Promise promise) {
+        if (manService==null){
+            promise.reject(new Throwable("Manservice = null"));
+            return;
+        }
         if (args == null) {
             promise.reject(new Throwable("error!,args=null!"));
             return;
@@ -131,7 +148,11 @@ public class RNEmasManager {
     }
 
     //页面开始
-    public static synchronized void onPageStart(String pageName) {
+    public static synchronized void onPageStart(String pageName,Promise promise) {
+        if (manService==null){
+            promise.reject(new Throwable("Manservice = null"));
+            return;
+        }
         if (pageName == null) {
             return;
         }
@@ -144,12 +165,16 @@ public class RNEmasManager {
 
     //页面结束
     public static synchronized void onPageEnd(String pageName, Promise promise) {
+        if (manService==null){
+            promise.reject(new Throwable("Manservice = null"));
+            return;
+        }
         if (pageName == null) {
             promise.reject(new Throwable("pageName==null"));
             return;
         }
         if (stack.size() == 0) {
-            promise.reject(new Throwable("didn't use onPageStart func!"));
+            promise.reject(new Throwable("please use onPageStart first"));
             return;
         }
         pageInfo p = (pageInfo) stack.peek();
@@ -177,10 +202,18 @@ public class RNEmasManager {
     }
 
     public static void onPause(Activity activity) {
+        if (manService==null){
+            Log.e("error","Manservice=null");
+            return;
+        }
         manService.getMANPageHitHelper().pageDisAppear(activity);
     }
 
     public static void onResume(Activity activity) {
+        if (manService==null){
+            Log.e("error","Manservice=null");
+            return;
+        }
         manService.getMANPageHitHelper().pageAppear(activity);
     }
 
