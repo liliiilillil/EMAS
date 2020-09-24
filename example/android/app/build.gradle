@@ -224,11 +224,6 @@ android {
     lintOptions {
         abortOnError false
     }
-    packagingOptions {
-        exclude 'lib/x86/libMotu.so'
-        exclude 'lib/armeabi-v7a/libMotu.so'
-        exclude 'lib/armeabi/libMotu.so'
-    }
 }
 
 dependencies {

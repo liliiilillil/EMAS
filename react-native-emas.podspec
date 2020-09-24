@@ -26,8 +26,7 @@ Pod::Spec.new do |s|
   s.requires_arc        = true
   s.platform            = :ios, "7.0"
   s.preserve_paths      = "*.framework"
-  s.source_files        = 'ios/Source/**/*.{h,m}'
-  s.vendored_frameworks = 'lib/*.framework'
+  s.source_files        = 'ios/**/*.{h,m}'
   s.dependency 'React'
   s.dependency 'AlicloudMAN','1.0.12'
   s.dependency 'AlicloudUT','5.2.0.8'

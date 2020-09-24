@@ -10,7 +10,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		4F90675C251207C300C1A12D /* AliyunEmasServices-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F90675B251207C300C1A12D /* AliyunEmasServices-Info.plist */; };
+		4F90675E251C4C0600C1A12D /* AliyunEmasServices-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F90675D251C4C0600C1A12D /* AliyunEmasServices-Info.plist */; };
 		94F355622451479B003F86BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94F355612451479B003F86BF /* LaunchScreen.storyboard */; };
 		D69CDA7E20A44A2E00BD0D80 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D69CDA7D20A44A2800BD0D80 /* CoreMotion.framework */; };
 		E0B8C870DFB1F5B9468C434F /* libPods-TRNWAppTemplate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A99F2E49ADDF57C22FE9D81C /* libPods-TRNWAppTemplate.a */; };
@@ -25,7 +25,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TRNWAppTemplate/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TRNWAppTemplate/main.m; sourceTree = "<group>"; };
 		499512190B7D3BC75B805991 /* Pods-TRNWAppTemplate.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRNWAppTemplate.test.xcconfig"; path = "Pods/Target Support Files/Pods-TRNWAppTemplate/Pods-TRNWAppTemplate.test.xcconfig"; sourceTree = "<group>"; };
-		4F90675B251207C300C1A12D /* AliyunEmasServices-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AliyunEmasServices-Info.plist"; path = "../node_modules/@terminus/react-native-emas/ios/lib/AliyunEmasServices-Info.plist"; sourceTree = "<group>"; };
+		4F90675D251C4C0600C1A12D /* AliyunEmasServices-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AliyunEmasServices-Info.plist"; path = "../node_modules/@terminus/react-native-emas/AliyunEmasServices-Info.plist"; sourceTree = "<group>"; };
 		94F355612451479B003F86BF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = TRNWAppTemplate/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A99F2E49ADDF57C22FE9D81C /* libPods-TRNWAppTemplate.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TRNWAppTemplate.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C347B14601B695662909A3B1 /* Pods-TRNWAppTemplate.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRNWAppTemplate.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TRNWAppTemplate/Pods-TRNWAppTemplate.debug.xcconfig"; sourceTree = "<group>"; };
@@ -51,7 +51,7 @@
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				4F90675B251207C300C1A12D /* AliyunEmasServices-Info.plist */,
+				4F90675D251C4C0600C1A12D /* AliyunEmasServices-Info.plist */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -165,7 +165,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F90675C251207C300C1A12D /* AliyunEmasServices-Info.plist in Resources */,
+				4F90675E251C4C0600C1A12D /* AliyunEmasServices-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				94F355622451479B003F86BF /* LaunchScreen.storyboard in Resources */,
 			);
