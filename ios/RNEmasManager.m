@@ -1,7 +1,6 @@
 #import "RNEmasManager.h"
 #import <AlicloudMobileAnalitics/ALBBMAN.h>
 
-
 @implementation RNEmasManager
 
 RCT_EXPORT_MODULE(RNEmasModule);
@@ -124,34 +123,36 @@ RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName resolve:(RCTPromiseResolveBlo
         reject(@"error",@"pageName==null",nil);
         return;
     }
-    _startTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];
-    if (_timeStack==nil) {
-        _timeStack = [NSMutableArray array];
+    NSNumber *startTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];//获取当前已启动时间
+    if (_stack==nil) {
+        _stack = [NSMutableArray array];        //获取模拟栈的状态，未初始化则初始化
     }
-    if (_pageStack==nil) {
-        _pageStack = [NSMutableArray array];
-    }
-    _timecount=_timeStack.count;
-    _pagecount=_pageStack.count;
-    [_timeStack insertObject:_startTime atIndex:_timecount];
-    [_pageStack insertObject:pageName atIndex:_pagecount];
+    NSDictionary *pageInfo =@{@"pageName":pageName,@"time":startTime};
+    [_stack addObject:pageInfo];                        //将页面名称和当前时间传入模拟栈
 }
 
 RCT_EXPORT_METHOD(onPageEnd:(NSString *)pageName resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
 {
+    
+    if (_stack.count==0) {
+        reject(@"error",@"pageName doesn't match",nil);             //若模拟栈为空则说明未使用onPageStart函数
+    }
     if (pageName==nil) {
         reject(@"error",@"pageName==null",nil);
         return;
     }
-    if ([pageName isEqual:_pageStack.lastObject]) {
-        NSNumber *endTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];
-        NSNumber *startTime=_timeStack.lastObject;
-        [_pageStack removeLastObject];
-        [_timeStack removeLastObject];
-        NSNumber *durationNumber=[NSNumber numberWithLong:([endTime longValue]-[_startTime longValue])];
-        long *duration =[durationNumber longValue];
+    NSDictionary *lastObject=_stack.lastObject;                     //取出栈顶元素
+    if ([pageName isEqualToString:[lastObject valueForKey:@"pageName"]]){//若栈顶元素和当前pageName不同则reject
+        NSNumber *endTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];//获取当前时间
+        NSNumber *startTime=[lastObject valueForKey:@"time"];       //取出栈顶时间
+        [_stack removeLastObject];                                  //模拟pop()
+        NSNumber *durationNumber=[NSNumber numberWithLong:([endTime longValue]-[startTime longValue])];
+        long *duration =[durationNumber longValue];                 //计算停留时间
         ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
-        [pageHitBuilder setReferPage:_pageStack.lastObject];
+        if (_stack.count!=0) {                                      //若栈内还有其他元素则说明有前置页面
+            NSDictionary *nowLastObject=_stack.lastObject;
+            [pageHitBuilder setReferPage:[nowLastObject valueForKey:@"pageName"]];
+        }
         [pageHitBuilder setPageName:pageName];
         [pageHitBuilder setDurationOnPage:duration];
         ALBBMANTracker *tracker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
