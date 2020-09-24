@@ -18,11 +18,11 @@
   ④ android/build.gradle中添加Maven仓库地址：
     ```
     allprojects {
-        repositories {
-            maven {
-                url 'http://maven.aliyun.com/nexus/content/repositories/releases/'
-            }
+      repositories {
+        maven {
+          url 'http://maven.aliyun.com/nexus/content/repositories/releases/'
         }
+      }
     }
     ```
 
@@ -78,10 +78,9 @@
 ### IOS
   ② 在Pods下的Podfile中添加
     ```
-    source 'https://github.com/CocoaPods/Specs.git'
     source 'https://github.com/aliyun/aliyun-specs.git'
 
-    `pod 'react-native-emas', :path => '../node_modules/@terminus/react-native-emas/react-native-emas.podspec'`
+    pod 'react-native-emas', :path => '../node_modules/@terminus/react-native-emas/react-native-emas.podspec'
     ```
 
   ③在控制台产品概览页面，下载App的配置文件AliyunEmasServices-Info.plist，如下图所示：
