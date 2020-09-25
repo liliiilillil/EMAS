@@ -194,15 +194,16 @@ public class RNEmasManager {
         }
         PageInfo p = doStack("peek",null);
         if (p.pageName.equals(pageName)) {
-            doStack("pop", null);
             long endMilliSeconds = SystemClock.elapsedRealtime();
             long startMilliSeconds = p.time;
+            doStack("pop", null);
             long duration = (endMilliSeconds - startMilliSeconds) / 1000;
             MANPageHitBuilder pageHitBuilder;
             pageHitBuilder = new MANPageHitBuilder(pageName);
             String referPageName;
             if (stack.size() != 0) {
-                referPageName = p.pageName;
+                PageInfo nowInfo=doStack("peek",null);
+                referPageName = nowInfo.pageName;
             } else {
                 referPageName = null;
             }
