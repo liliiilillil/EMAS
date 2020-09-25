@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.os.SystemClock;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.alibaba.sdk.android.man.MANHitBuilders;
 import com.alibaba.sdk.android.man.MANPageHitBuilder;
 import com.alibaba.sdk.android.man.MANService;
@@ -18,6 +20,10 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
 
 import java.util.Stack;
+
+import javax.inject.Singleton;
+
+import static okhttp3.internal.Internal.instance;
 
 
 public class RNEmasManager {
@@ -32,7 +38,16 @@ public class RNEmasManager {
     static MANService manService = MANServiceProvider.getService();
     static Stack stack = new Stack();
 
-    static class pageInfo {
+    private static RNEmasManager instance = null;
+
+    public static synchronized RNEmasManager getInstance() {
+        if (instance == null) {
+            instance = new RNEmasManager();
+        }
+        return instance;
+    }
+
+    class PageInfo {
         String pageName;
         long time;
     }
@@ -63,7 +78,7 @@ public class RNEmasManager {
     }
 
     //自定义页面信息
-    public static void onPageInfo(ReadableMap args, Promise promise) {
+    public void onPageInfo(ReadableMap args, Promise promise) {
         if (manService == null) {
             promise.reject(new Throwable("Manservice = null"));
             return;
@@ -106,7 +121,7 @@ public class RNEmasManager {
     }
 
     //自定义事件
-    public static void onEvent(ReadableMap args, Promise promise) {
+    public void onEvent(ReadableMap args, Promise promise) {
         if (manService == null) {
             promise.reject(new Throwable("Manservice = null"));
             return;
@@ -148,7 +163,7 @@ public class RNEmasManager {
     }
 
     //页面开始
-    public static synchronized void onPageStart(String pageName, Promise promise) {
+    public synchronized void onPageStart(String pageName, Promise promise) {
         if (manService == null) {
             promise.reject(new Throwable("Manservice = null"));
             return;
@@ -157,14 +172,14 @@ public class RNEmasManager {
             return;
         }
         long startMilliSeconds = SystemClock.elapsedRealtime();
-        pageInfo p = new pageInfo();
+        PageInfo p = new PageInfo();
         p.pageName = pageName;
         p.time = startMilliSeconds;
-        stack.push(p);
+        doStack("push", p);
     }
 
     //页面结束
-    public static synchronized void onPageEnd(String pageName, Promise promise) {
+    public synchronized void onPageEnd(String pageName, Promise promise) {
         if (manService == null) {
             promise.reject(new Throwable("Manservice = null"));
             return;
@@ -177,9 +192,9 @@ public class RNEmasManager {
             promise.reject(new Throwable("please use onPageStart first"));
             return;
         }
-        pageInfo p = (pageInfo) stack.peek();
+        PageInfo p = doStack("peek",null);
         if (p.pageName.equals(pageName)) {
-            stack.pop();
+            doStack("pop", null);
             long endMilliSeconds = SystemClock.elapsedRealtime();
             long startMilliSeconds = p.time;
             long duration = (endMilliSeconds - startMilliSeconds) / 1000;
@@ -215,6 +230,21 @@ public class RNEmasManager {
             return;
         }
         manService.getMANPageHitHelper().pageAppear(activity);
+    }
+
+    private static synchronized PageInfo doStack(String doWhat, PageInfo p) {
+        if (doWhat == "push") {
+            stack.push(p);
+            return null;
+        } else if (doWhat == "pop") {
+            stack.pop();
+            return null;
+        }else if (doWhat=="peek"){
+            PageInfo p1 = (PageInfo) stack.peek();
+            return p1;
+        }else{
+            return null;
+        }
     }
 
     private static String getAppKeyFromManifest(Application application) {

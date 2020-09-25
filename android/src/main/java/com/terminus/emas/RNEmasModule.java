@@ -14,6 +14,7 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
     private final String MODULE_NAME = "RNEmasModule";
 
     MANService manService = MANServiceProvider.getService();
+    RNEmasManager manager=RNEmasManager.getInstance();
 
     public RNEmasModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -49,22 +50,22 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void onPageStart(String pageName, Promise promise) {
-        RNEmasManager.onPageStart(pageName, promise);
+        manager.onPageStart(pageName, promise);
     }
 
     @ReactMethod
     public void onPageEnd(String pageName, Promise promise) {
-        RNEmasManager.onPageEnd(pageName, promise);
+        manager.onPageEnd(pageName, promise);
     }
 
     @ReactMethod
     public void onPageInfo(ReadableMap args, Promise promise) {
-        RNEmasManager.onPageInfo(args, promise);
+        manager.onPageInfo(args, promise);
     }
 
 
     @ReactMethod
     public void onEvent(ReadableMap args, Promise promise) {
-        RNEmasManager.onEvent(args, promise);
+        manager.onEvent(args, promise);
     }
 }
