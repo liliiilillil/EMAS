@@ -31,8 +31,8 @@ public class RNEmasManager {
 
     MANService manService = MANServiceProvider.getService();
     Stack stack = new Stack();
-
     private static RNEmasManager instance = null;
+
     private RNEmasManager (){};
     public static synchronized RNEmasManager getInstance() {
         if(instance == null){
