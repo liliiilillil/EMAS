@@ -8,8 +8,6 @@ import android.content.pm.PackageManager;
 import android.os.SystemClock;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.alibaba.sdk.android.man.MANHitBuilders;
 import com.alibaba.sdk.android.man.MANPageHitBuilder;
 import com.alibaba.sdk.android.man.MANService;
@@ -20,10 +18,6 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
 
 import java.util.Stack;
-
-import javax.inject.Singleton;
-
-import static okhttp3.internal.Internal.instance;
 
 
 public class RNEmasManager {
@@ -165,7 +159,7 @@ public class RNEmasManager {
     //页面开始
     public synchronized void onPageStart(String pageName, Promise promise) {
         if (manService == null) {
-            promise.reject(new Throwable("Manservice = null"));
+            promise.reject(new Throwable("ManService = null"));
             return;
         }
         if (pageName == null) {
@@ -181,7 +175,7 @@ public class RNEmasManager {
     //页面结束
     public synchronized void onPageEnd(String pageName, Promise promise) {
         if (manService == null) {
-            promise.reject(new Throwable("Manservice = null"));
+            promise.reject(new Throwable("ManService = null"));
             return;
         }
         if (pageName == null) {
@@ -189,20 +183,20 @@ public class RNEmasManager {
             return;
         }
         if (stack.size() == 0) {
-            promise.reject(new Throwable("please use onPageStart first"));
+            promise.reject(new Throwable("please use onPageStart first"));  //空栈说明未调用onPageStart
             return;
         }
-        PageInfo p = doStack("peek",null);
-        if (p.pageName.equals(pageName)) {
+        PageInfo p = doStack("peek", null);                  //获取栈顶信息
+        if (p.pageName.equals(pageName)) {                              //栈顶page匹配
             long endMilliSeconds = SystemClock.elapsedRealtime();
             long startMilliSeconds = p.time;
-            doStack("pop", null);
-            long duration = (endMilliSeconds - startMilliSeconds) / 1000;
+            doStack("pop", null);                           //出栈
+            long duration = (endMilliSeconds - startMilliSeconds) / 1000;   //与ios统一故以秒为单位
             MANPageHitBuilder pageHitBuilder;
             pageHitBuilder = new MANPageHitBuilder(pageName);
             String referPageName;
-            if (stack.size() != 0) {
-                PageInfo nowInfo=doStack("peek",null);
+            if (stack.size() != 0) {                                    //栈顶出栈后栈不为空则说明有来源页面
+                PageInfo nowInfo = doStack("peek", null);
                 referPageName = nowInfo.pageName;
             } else {
                 referPageName = null;
@@ -233,17 +227,17 @@ public class RNEmasManager {
         manService.getMANPageHitHelper().pageAppear(activity);
     }
 
+    //对栈操作
     private static synchronized PageInfo doStack(String doWhat, PageInfo p) {
-        if (doWhat == "push") {
+        if (doWhat.equals("push")) {
             stack.push(p);
             return null;
-        } else if (doWhat == "pop") {
+        } else if (doWhat.equals("pop")) {
             stack.pop();
             return null;
-        }else if (doWhat=="peek"){
-            PageInfo p1 = (PageInfo) stack.peek();
-            return p1;
-        }else{
+        } else if (doWhat.equals("peek")) {
+            return (PageInfo) stack.peek();
+        } else {
             return null;
         }
     }

@@ -26,12 +26,12 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onSignUp(String usernick, Promise promise) {
-        if (usernick == null) {
+    public void onSignUp(String userNick, Promise promise) {
+        if (userNick == null) {
             promise.reject(new Throwable("error!,userNick=null!"));
             return;
         }
-        manService.getMANAnalytics().userRegister(usernick);
+        manService.getMANAnalytics().userRegister(userNick);
     }
 
     @ReactMethod
