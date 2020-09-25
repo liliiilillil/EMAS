@@ -134,7 +134,7 @@ RCT_EXPORT_METHOD(onPageEnd:(NSString *)pageName resolve:(RCTPromiseResolveBlock
 {
     
     if (_stack.count==0) {
-        reject(@"error",@"pageName doesn't match",nil);             //若模拟栈为空则说明未使用onPageStart函数
+        reject(@"error",@"please use onPageStart first",nil);             //若模拟栈为空则说明未使用onPageStart函数
     }
     if (pageName==nil) {
         reject(@"error",@"pageName==null",nil);

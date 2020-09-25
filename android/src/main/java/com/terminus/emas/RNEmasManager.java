@@ -32,7 +32,16 @@ public class RNEmasManager {
     static MANService manService = MANServiceProvider.getService();
     static Stack stack = new Stack();
 
-    static class pageInfo {
+    private static RNEmasManager instance = null;
+
+    public static synchronized RNEmasManager getInstance() {
+        if (instance == null) {
+            instance = new RNEmasManager();
+        }
+        return instance;
+    }
+
+    class PageInfo {
         String pageName;
         long time;
     }
@@ -63,7 +72,7 @@ public class RNEmasManager {
     }
 
     //自定义页面信息
-    public static void onPageInfo(ReadableMap args, Promise promise) {
+    public void onPageInfo(ReadableMap args, Promise promise) {
         if (manService == null) {
             promise.reject(new Throwable("Manservice = null"));
             return;
@@ -106,7 +115,7 @@ public class RNEmasManager {
     }
 
     //自定义事件
-    public static void onEvent(ReadableMap args, Promise promise) {
+    public void onEvent(ReadableMap args, Promise promise) {
         if (manService == null) {
             promise.reject(new Throwable("Manservice = null"));
             return;
@@ -148,25 +157,25 @@ public class RNEmasManager {
     }
 
     //页面开始
-    public static synchronized void onPageStart(String pageName, Promise promise) {
+    public synchronized void onPageStart(String pageName, Promise promise) {
         if (manService == null) {
-            promise.reject(new Throwable("Manservice = null"));
+            promise.reject(new Throwable("ManService = null"));
             return;
         }
         if (pageName == null) {
             return;
         }
         long startMilliSeconds = SystemClock.elapsedRealtime();
-        pageInfo p = new pageInfo();
+        PageInfo p = new PageInfo();
         p.pageName = pageName;
         p.time = startMilliSeconds;
-        stack.push(p);
+        doStack("push", p);
     }
 
     //页面结束
-    public static synchronized void onPageEnd(String pageName, Promise promise) {
+    public synchronized void onPageEnd(String pageName, Promise promise) {
         if (manService == null) {
-            promise.reject(new Throwable("Manservice = null"));
+            promise.reject(new Throwable("ManService = null"));
             return;
         }
         if (pageName == null) {
@@ -174,20 +183,21 @@ public class RNEmasManager {
             return;
         }
         if (stack.size() == 0) {
-            promise.reject(new Throwable("please use onPageStart first"));
+            promise.reject(new Throwable("please use onPageStart first"));  //空栈说明未调用onPageStart
             return;
         }
-        pageInfo p = (pageInfo) stack.peek();
-        if (p.pageName.equals(pageName)) {
-            stack.pop();
+        PageInfo p = doStack("peek", null);                  //获取栈顶信息
+        if (p.pageName.equals(pageName)) {                              //栈顶page匹配
             long endMilliSeconds = SystemClock.elapsedRealtime();
             long startMilliSeconds = p.time;
-            long duration = (endMilliSeconds - startMilliSeconds) / 1000;
+            doStack("pop", null);                           //出栈
+            long duration = (endMilliSeconds - startMilliSeconds) / 1000;   //与ios统一故以秒为单位
             MANPageHitBuilder pageHitBuilder;
             pageHitBuilder = new MANPageHitBuilder(pageName);
             String referPageName;
-            if (stack.size() != 0) {
-                referPageName = p.pageName;
+            if (stack.size() != 0) {                                    //栈顶出栈后栈不为空则说明有来源页面
+                PageInfo nowInfo = doStack("peek", null);
+                referPageName = nowInfo.pageName;
             } else {
                 referPageName = null;
             }
@@ -215,6 +225,21 @@ public class RNEmasManager {
             return;
         }
         manService.getMANPageHitHelper().pageAppear(activity);
+    }
+
+    //对栈操作
+    private static synchronized PageInfo doStack(String doWhat, PageInfo p) {
+        if (doWhat.equals("push")) {
+            stack.push(p);
+            return null;
+        } else if (doWhat.equals("pop")) {
+            stack.pop();
+            return null;
+        } else if (doWhat.equals("peek")) {
+            return (PageInfo) stack.peek();
+        } else {
+            return null;
+        }
     }
 
     private static String getAppKeyFromManifest(Application application) {
