@@ -33,7 +33,7 @@ public class RNEmasManager {
     static Stack stack = new Stack();
 
     private static RNEmasManager instance = null;
-
+    private RNEmasManager (){};
     public static synchronized RNEmasManager getInstance() {
         if (instance == null) {
             instance = new RNEmasManager();
