@@ -166,8 +166,8 @@ public class RNEmasManager {
         }
         long startMilliSeconds = SystemClock.elapsedRealtime();
         PageInfo p = new PageInfo();
-        p.pageName = pageName;
-        p.time = startMilliSeconds;
+        p.setPageName(pageName);
+        p.setTime(startMilliSeconds);
         doStack("push", p);
     }
 
@@ -186,9 +186,9 @@ public class RNEmasManager {
             return;
         }
         PageInfo p = doStack("peek", null);                  //获取栈顶信息
-        if (p.pageName.equals(pageName)) {                              //栈顶page匹配
+        if (p.getPageName().equals(pageName)) {                              //栈顶page匹配
             long endMilliSeconds = SystemClock.elapsedRealtime();
-            long startMilliSeconds = p.time;
+            long startMilliSeconds = p.getTime();
             doStack("pop", null);                           //出栈
             long duration = (endMilliSeconds - startMilliSeconds) / 1000;   //与ios统一故以秒为单位
             MANPageHitBuilder pageHitBuilder;
@@ -196,7 +196,7 @@ public class RNEmasManager {
             String referPageName;
             if (stack.size() != 0) {                                    //栈顶出栈后栈不为空则说明有来源页面
                 PageInfo nowInfo = doStack("peek", null);
-                referPageName = nowInfo.pageName;
+                referPageName = nowInfo.getPageName();
             } else {
                 referPageName = null;
             }
