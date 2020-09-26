@@ -1,8 +1,5 @@
 package com.terminus.emas;
 
-
-import com.alibaba.sdk.android.man.MANService;
-import com.alibaba.sdk.android.man.MANServiceProvider;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -12,9 +9,6 @@ import com.facebook.react.bridge.ReadableMap;
 
 public class RNEmasModule extends ReactContextBaseJavaModule {
     private final String MODULE_NAME = "RNEmasModule";
-
-    MANService manService = MANServiceProvider.getService();
-    RNEmasManager manager=RNEmasManager.getInstance();
 
     public RNEmasModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -31,7 +25,7 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
             promise.reject(new Throwable("error!,userNick=null!"));
             return;
         }
-        manService.getMANAnalytics().userRegister(userNick);
+        RNEmasManager.getInstance().manService.getMANAnalytics().userRegister(userNick);
     }
 
     @ReactMethod
@@ -40,32 +34,31 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
             promise.reject(new Throwable("error!,userNick=null||userId=null!"));
             return;
         }
-        manService.getMANAnalytics().updateUserAccount(userNick, userId);
+        RNEmasManager.getInstance().manService.getMANAnalytics().updateUserAccount(userNick, userId);
     }
 
     @ReactMethod
     public void onLogout() {
-        manService.getMANAnalytics().updateUserAccount("", "");
+        RNEmasManager.getInstance().manService.getMANAnalytics().updateUserAccount("", "");
     }
 
     @ReactMethod
     public void onPageStart(String pageName, Promise promise) {
-        manager.onPageStart(pageName, promise);
+        RNEmasManager.getInstance().onPageStart(pageName, promise);
     }
 
     @ReactMethod
     public void onPageEnd(String pageName, Promise promise) {
-        manager.onPageEnd(pageName, promise);
+        RNEmasManager.getInstance().onPageEnd(pageName, promise);
     }
 
     @ReactMethod
     public void onPageInfo(ReadableMap args, Promise promise) {
-        manager.onPageInfo(args, promise);
+        RNEmasManager.getInstance().onPageInfo(args, promise);
     }
-
 
     @ReactMethod
     public void onEvent(ReadableMap args, Promise promise) {
-        manager.onEvent(args, promise);
+        RNEmasManager.getInstance().onEvent(args, promise);
     }
 }

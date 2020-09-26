@@ -29,24 +29,23 @@ public class RNEmasManager {
     private static String APPKEY_NAME = "EMAS_APPKEY";
     private static String APPSECRET_NAME = "EMAS_APPSECRET";
 
-    static MANService manService = MANServiceProvider.getService();
-    static Stack stack = new Stack();
-
+    MANService manService = MANServiceProvider.getService();
+    Stack stack = new Stack();
     private static RNEmasManager instance = null;
+
     private RNEmasManager (){};
     public static synchronized RNEmasManager getInstance() {
-        if (instance == null) {
-            instance = new RNEmasManager();
+        if(instance == null){
+            synchronized (RNEmasManager.class){
+                if(instance == null){
+                    instance = new RNEmasManager();
+                }
+            }
         }
         return instance;
     }
 
-    class PageInfo {
-        String pageName;
-        long time;
-    }
-
-    public static void init(Application application) {
+    public void init(Application application) {
         String appKey = getAppKeyFromManifest(application);
         String appSecret = getAppSecretFromManifest(application);
         Context context = application.getApplicationContext();
@@ -54,7 +53,7 @@ public class RNEmasManager {
     }
 
     //是否自动打点
-    public static void turnOffAutoTrack() {
+    public void turnOffAutoTrack() {
         if (manService == null) {
             Log.e("error", "ManService=null");
             return;
@@ -63,7 +62,7 @@ public class RNEmasManager {
     }
 
     //调试日志
-    public static void turnOnDebug() {
+    public void turnOnDebug() {
         if (manService == null) {
             Log.e("error", "ManService=null");
             return;
@@ -167,8 +166,8 @@ public class RNEmasManager {
         }
         long startMilliSeconds = SystemClock.elapsedRealtime();
         PageInfo p = new PageInfo();
-        p.pageName = pageName;
-        p.time = startMilliSeconds;
+        p.setPageName(pageName);
+        p.setTime(startMilliSeconds);
         doStack("push", p);
     }
 
@@ -187,9 +186,9 @@ public class RNEmasManager {
             return;
         }
         PageInfo p = doStack("peek", null);                  //获取栈顶信息
-        if (p.pageName.equals(pageName)) {                              //栈顶page匹配
+        if (p.getPageName().equals(pageName)) {                              //栈顶page匹配
             long endMilliSeconds = SystemClock.elapsedRealtime();
-            long startMilliSeconds = p.time;
+            long startMilliSeconds = p.getTime();
             doStack("pop", null);                           //出栈
             long duration = (endMilliSeconds - startMilliSeconds) / 1000;   //与ios统一故以秒为单位
             MANPageHitBuilder pageHitBuilder;
@@ -197,7 +196,7 @@ public class RNEmasManager {
             String referPageName;
             if (stack.size() != 0) {                                    //栈顶出栈后栈不为空则说明有来源页面
                 PageInfo nowInfo = doStack("peek", null);
-                referPageName = nowInfo.pageName;
+                referPageName = nowInfo.getPageName();
             } else {
                 referPageName = null;
             }
@@ -211,7 +210,7 @@ public class RNEmasManager {
         }
     }
 
-    public static void onPause(Activity activity) {
+    public void onPause(Activity activity) {
         if (manService == null) {
             Log.e("error", "ManService=null");
             return;
@@ -219,7 +218,7 @@ public class RNEmasManager {
         manService.getMANPageHitHelper().pageDisAppear(activity);
     }
 
-    public static void onResume(Activity activity) {
+    public void onResume(Activity activity) {
         if (manService == null) {
             Log.e("error", "ManService=null");
             return;
@@ -228,7 +227,7 @@ public class RNEmasManager {
     }
 
     //对栈操作
-    private static synchronized PageInfo doStack(String doWhat, PageInfo p) {
+    private synchronized PageInfo doStack(String doWhat, PageInfo p) {
         if (doWhat.equals("push")) {
             stack.push(p);
             return null;
@@ -242,7 +241,7 @@ public class RNEmasManager {
         }
     }
 
-    private static String getAppKeyFromManifest(Application application) {
+    private String getAppKeyFromManifest(Application application) {
         try {
             ApplicationInfo applicationInfo = application.getPackageManager().getApplicationInfo(application.getPackageName(), PackageManager.GET_META_DATA);
             return applicationInfo.metaData.getString(APPKEY_NAME);
@@ -252,7 +251,7 @@ public class RNEmasManager {
         return null;
     }
 
-    private static String getAppSecretFromManifest(Application application) {
+    private String getAppSecretFromManifest(Application application) {
         try {
             ApplicationInfo applicationInfo = application.getPackageManager().getApplicationInfo(application.getPackageName(), PackageManager.GET_META_DATA);
             return applicationInfo.metaData.getString(APPSECRET_NAME);

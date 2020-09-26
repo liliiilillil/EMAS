@@ -65,13 +65,13 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        RNEmasManager.onResume(this);
+        RNEmasManager.getInstance().onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        RNEmasManager.onPause(this);
+        RNEmasManager.getInstance().onPause(this);
     }
 
     @Override
