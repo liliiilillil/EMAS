@@ -154,9 +154,9 @@
 
       <Button title={'PageEnd2'} onPress={()=>onPageEnd("duration test page2")}/>
 
-      <Button title={'onPageInfo'} onPress={()=>onPageInfo({pageName:"myTestPage",referPageName:"myReferPageName",duration:200,properties:{gender:"male",height:"182"},globalProperty:{key:"value"},removeGlobalProperty:["firstKey","secondKey","thirdKey"]})}/>
+      <Button title={'onPageInfo'} onPress={()=>onPageInfo({pageName:"myTestPage",referPageName:"myReferPageName",duration:200,properties:{gender:"male",height:"182"},globalProperty:{key1:"value1",key2:"value2"},removeGlobalProperty:["key1","key2"]})}/>
 
       <Button title={'onEvent'} onPress={()=>onEvent({eventLabel:"label",eventPage:"eventPage",eventDuration:300,properties:{type:"rock",language:"cn"}})}/>
-      
+
     </View>
     ```
