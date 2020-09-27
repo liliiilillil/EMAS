@@ -187,12 +187,12 @@ public class RNEmasManager {
             promise.reject(new Throwable("please use onPageStart first"));  //空栈说明未调用onPageStart
             return;
         }
-        PageInfo p = doStack("peek", null);                  //获取栈顶信息
-        if (p.getPageName().equals(pageName)) {                              //栈顶page匹配
+        PageInfo p = doStack("peek", null);                                 //获取栈顶信息
+        if (p.getPageName().equals(pageName)) {                             //栈顶page匹配
             MANPageHitBuilder pageHitBuilder = new MANPageHitBuilder(pageName);
             long endMilliSeconds = SystemClock.elapsedRealtime();
             long startMilliSeconds = p.getTime();
-            doStack("pop", null);                           //出栈
+            doStack("pop", null);                                           //出栈
             long duration = (endMilliSeconds - startMilliSeconds) / 1000;   //与ios统一故以秒为单位
             pageHitBuilder.setDurationOnPage(duration);
             String referPageName;
@@ -242,16 +242,17 @@ public class RNEmasManager {
 
     //对栈操作
     private synchronized PageInfo doStack(String doWhat, PageInfo p) {
-        if (doWhat.equals("push")) {
-            stack.push(p);
-            return null;
-        } else if (doWhat.equals("pop")) {
-            stack.pop();
-            return null;
-        } else if (doWhat.equals("peek")) {
-            return (PageInfo) stack.peek();
-        } else {
-            return null;
+        switch (doWhat){
+            case "push":
+                stack.push(p);
+                return null;
+            case "pop":
+                stack.pop();
+                return null;
+            case "peek":
+                return (PageInfo) stack.peek();
+            default:
+                return null;
         }
     }
 
