@@ -91,7 +91,7 @@ public class MainApplication extends Application implements ReactApplication {
     RNEmasManager manager=RNEmasManager.getInstance();
     manager.turnOffAutoTrack();
     manager.turnOnDebug();
-    manager.init(this);
+    RNEmasManager.getInstance().init(this);
   }
 
   @Override
