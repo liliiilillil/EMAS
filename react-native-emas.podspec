@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.author              = "lhd"
   s.source              = { :git => "https://terminus-org.app.terminus.io/wb/mobile/react-native-emas"}
   s.requires_arc        = true
-  s.platform            = :ios, "7.0"
+  s.platform            = :ios, "9.0"
   s.preserve_paths      = "*.framework"
   s.source_files        = 'ios/**/*.{h,m}'
   s.dependency 'React'

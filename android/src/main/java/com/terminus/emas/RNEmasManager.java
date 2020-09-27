@@ -46,6 +46,9 @@ public class RNEmasManager {
     }
 
     public void init(Application application) {
+        if (manService==null){
+            return;
+        }
         String appKey = getAppKeyFromManifest(application);
         String appSecret = getAppSecretFromManifest(application);
         Context context = application.getApplicationContext();
@@ -73,11 +76,11 @@ public class RNEmasManager {
     //自定义页面信息
     public void onPageInfo(ReadableMap args, Promise promise) {
         if (manService == null) {
-            promise.reject(new Throwable("Manservice = null"));
+            promise.reject(RNEmasConstants.EmasErrorCode.ManServiceNotFound,new Throwable("ManService not found"));
             return;
         }
         if (args == null) {
-            promise.reject(new Throwable("error!,args=null!"));
+            promise.reject(RNEmasConstants.EmasErrorCode.ArgsNotFound,new Throwable("error!,args=null!"));
             return;
         }
         String pageName;
@@ -88,7 +91,7 @@ public class RNEmasManager {
             pageName = args.getString("pageName");
             pageHitBuilder = new MANPageHitBuilder(pageName);
         } else {
-            promise.reject(new Throwable("error!,pageName=null!"));
+            promise.reject(RNEmasConstants.EmasErrorCode.PageNameNotFound,new Throwable("error!,pageName=null!"));
             return;
         }
         if (args.hasKey("referPageName")) {
@@ -110,27 +113,28 @@ public class RNEmasManager {
             }
         }
         manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
+        promise.resolve("pageInfo send succeed!");
     }
 
     //自定义事件
     public void onEvent(ReadableMap args, Promise promise) {
         if (manService == null) {
-            promise.reject(new Throwable("Manservice = null"));
+            promise.reject(RNEmasConstants.EmasErrorCode.ManServiceNotFound,new Throwable("ManService not found"));
             return;
         }
         if (args == null) {
-            promise.reject(new Throwable("error!,args=null!"));
+            promise.reject(RNEmasConstants.EmasErrorCode.ArgsNotFound,new Throwable("error!,args=null!"));
             return;
         }
         String eventLabel;
         String eventPage;
         long duration;
-        MANHitBuilders.MANCustomHitBuilder hitBuilder = null;
+        MANHitBuilders.MANCustomHitBuilder hitBuilder;
         if (args.hasKey(EVENT_LABEL)) {
             eventLabel = args.getString(EVENT_LABEL);
             hitBuilder = new MANHitBuilders.MANCustomHitBuilder(eventLabel);
         } else {
-            promise.reject(new Throwable("error!,eventLabel=null!"));
+            promise.reject(RNEmasConstants.EmasErrorCode.EventLabelNotFound,new Throwable("error!,eventLabel=null!"));
             return;
         }
         if (args.hasKey(EVENT_PAGE)) {
@@ -152,12 +156,13 @@ public class RNEmasManager {
             }
         }
         manService.getMANAnalytics().getDefaultTracker().send(hitBuilder.build());
+        promise.resolve("custom event send succeed!");
     }
 
     //页面开始
     public synchronized void onPageStart(String pageName, Promise promise) {
         if (manService == null) {
-            promise.reject(new Throwable("ManService = null"));
+            promise.reject(RNEmasConstants.EmasErrorCode.ManServiceNotFound,new Throwable("ManService not found"));
             return;
         }
         if (pageName == null) {
@@ -168,23 +173,24 @@ public class RNEmasManager {
         p.setPageName(pageName);
         p.setTime(startMilliSeconds);
         doStack("push", p);
+        promise.resolve("page start!");
     }
 
     //页面结束
     public synchronized void onPageEnd(ReadableMap args, Promise promise) {
         if (manService == null) {
-            promise.reject(new Throwable("ManService = null"));
+            promise.reject(RNEmasConstants.EmasErrorCode.ManServiceNotFound,new Throwable("ManService not found"));
             return;
         }
         String pageName;
         if (args.hasKey("pageName")) {
             pageName = args.getString("pageName");
         }else{
-            promise.reject(new Throwable("pageName=null"));
+            promise.reject(RNEmasConstants.EmasErrorCode.PageNameNotFound,new Throwable("pageName=null"));
             return;
         }
         if (stack.size() == 0) {
-            promise.reject(new Throwable("please use onPageStart first"));  //空栈说明未调用onPageStart
+            promise.reject(RNEmasConstants.EmasErrorCode.FrontPageNotFound,new Throwable("please use onPageStart first"));  //空栈说明未调用onPageStart
             return;
         }
         PageInfo p = doStack("peek", null);                  //获取栈顶信息
@@ -218,8 +224,9 @@ public class RNEmasManager {
             pageHitBuilder.setDurationOnPage(duration);
             pageHitBuilder.setReferPage(referPageName);
             manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
+            promise.resolve("page end!");
         } else {
-            promise.reject("pageName doesn't match");
+            promise.reject(RNEmasConstants.EmasErrorCode.PageNameDoesnotMatch,new Throwable("pageName doesn't match"));
             return;
         }
     }

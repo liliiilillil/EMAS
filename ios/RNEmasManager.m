@@ -8,6 +8,9 @@ RCT_EXPORT_MODULE(RNEmasModule);
 +(void) initWithAppKey:(NSString *)appKey appSecret:(NSString *)secretKey
 {
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
+    if (man==nil) {
+        return;
+    }
     [man autoInit];
 }
 
@@ -15,6 +18,9 @@ RCT_EXPORT_MODULE(RNEmasModule);
 {
     if (value) {
         ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
+        if (man==nil) {
+            return;
+        }
         [man turnOnDebug];
     }
 }
@@ -36,6 +42,10 @@ RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
         return;
     }
     ALBBMANCustomHitBuilder *customBuilder = [[ALBBMANCustomHitBuilder alloc] init];
+    if (customBuilder==nil) {
+        reject(@"error",@"customBuilder==nil!",nil);
+        return;
+    }
     [customBuilder setEventLabel:eventLabel];
     [customBuilder setEventPage:eventPage];
     [customBuilder setDurationOnEvent:eventDuration];
@@ -53,8 +63,13 @@ RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
         }
     }
     ALBBMANTracker *traker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
+    if (traker==nil) {
+        reject(@"error",@"traker==nil!",nil);
+        return;
+    }
     NSDictionary *dic = [customBuilder build];
     [traker send:dic];
+    resolve(@"custom event send succeed!");
 }
 
 RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
@@ -66,6 +81,10 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
         return;
     }
     ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
+    if (pageHitBuilder==nil) {
+        reject(@"error",@"pageHitBuilder==nil!",nil);
+        return;
+    }
     NSString *pageName = options[@"pageName"];
     NSString *referPageName = options[@"referPageName"];
     long *duration =[options[@"duration"] longValue];
@@ -93,6 +112,10 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
         }
     }
     ALBBMANTracker *tracker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
+    if (tracker==nil) {
+        reject(@"error",@"traker==nil!",nil);
+        return;
+    }
     if (globalProperty!=nil&&[globalProperty count]) {
         NSArray *keys;
         int i, count;
@@ -113,6 +136,7 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
         }
     }
     [tracker send:[pageHitBuilder build]];
+    resolve(@"custom pageInfo send succeed!");
 }
 
 //页面开始
@@ -128,6 +152,7 @@ RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName resolve:(RCTPromiseResolveBlo
     }
     NSDictionary *pageInfo =@{@"pageName":pageName,@"time":startTime};
     [_stack addObject:pageInfo];                        //将页面名称和当前时间传入模拟栈
+    resolve(@"page start!");
 }
 
 RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
@@ -136,7 +161,8 @@ RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBl
     NSString *referPageName = options[@"referPageName"];
     NSDictionary *properties = options[@"properties"];
     if (_stack.count==0) {
-        reject(@"error",@"please use onPageStart first",nil);   //若模拟栈为空则说明未使用onPageStart函数
+        reject(@"error",@"please use onPageStart first",nil);
+        return;                                             //若模拟栈为空则说明未使用onPageStart函数
     }
     if (pageName==nil) {
         reject(@"error",@"pageName==null",nil);
@@ -151,6 +177,10 @@ RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBl
         NSNumber *durationNumber=[NSNumber numberWithLong:([endTime longValue]-[startTime longValue])];
         long *duration =[durationNumber longValue];                              //计算停留时间
         ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
+        if (pageHitBuilder==nil) {
+           reject(@"error",@"pageHitBuilder==nil!",nil);
+            return;
+        }
         if (referPageName==nil) {
             if (_stack.count!=0) {                                              //若栈内还有其他元素则说明有前置页面
                 NSDictionary *nowLastObject=_stack.lastObject;
@@ -174,7 +204,12 @@ RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBl
         [pageHitBuilder setPageName:pageName];
         [pageHitBuilder setDurationOnPage:duration];
         ALBBMANTracker *tracker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
+        if (tracker==nil) {
+            reject(@"error",@"tracker==nil!",nil);
+            return;
+        }
         [tracker send:[pageHitBuilder build]];
+        resolve(@"page end!");
     }else{
         reject(@"error",@"pageName wrong",nil);
     }
@@ -188,14 +223,24 @@ RCT_EXPORT_METHOD(onLogin:(NSString *)userNick userid:(NSString *)userId resolve
         return;
     }
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
+    if (man==nil) {
+        reject(@"error",@"ALBBMANAnalytics==nil!",nil);
+        return;
+    }
     [man updateUserAccount:userNick userid:userId];
+    resolve(@"login succeed!");
 }
 
 //注销
-RCT_EXPORT_METHOD(onLogout)
+RCT_EXPORT_METHOD(onLogout:resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
 {
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
+    if (man==nil) {
+        reject(@"error",@"ALBBMANAnalytics==nil!",nil);
+        return;
+    }
     [man updateUserAccount:@"" userid:@""];
+    resolve(@"logout succeed!");
 }
 
 //注册
@@ -206,7 +251,12 @@ RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)
         return;
     }
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
+    if (man==nil) {
+        reject(@"error",@"ALBBMANAnalytics==nil!",nil);
+        return;
+    }
     [man userRegister:userNick];
+    resolve(@"signUp succeed!");
 }
 - (long)getLaunchSystemTime
 {
