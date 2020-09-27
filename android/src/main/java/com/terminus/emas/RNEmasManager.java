@@ -109,7 +109,6 @@ public class RNEmasManager {
                 }
             }
         }
-        pageHitBuilder.build();
         manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
     }
 
@@ -202,7 +201,6 @@ public class RNEmasManager {
             }
             pageHitBuilder.setReferPage(referPageName);
             pageHitBuilder.setDurationOnPage(duration);
-            pageHitBuilder.build();
             manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
         } else {
             promise.reject("pageName doesn't match");
