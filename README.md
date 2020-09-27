@@ -106,6 +106,7 @@
 
   `import { onSignUp, onLogin, onLogout, onPageInfo, onEvent } from '@terminus/react-native-emas'`
 
+## 以下方法均以promise返回结果
 ### onSignUp
     用户注册时调用,传入参数为用户名
 
