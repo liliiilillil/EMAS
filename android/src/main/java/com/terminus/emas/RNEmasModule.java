@@ -48,8 +48,8 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onPageEnd(String pageName, Promise promise) {
-        RNEmasManager.getInstance().onPageEnd(pageName, promise);
+    public void onPageEnd(ReadableMap args, Promise promise) {
+        RNEmasManager.getInstance().onPageEnd(args, promise);
     }
 
     @ReactMethod

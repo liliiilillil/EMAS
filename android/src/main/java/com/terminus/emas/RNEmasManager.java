@@ -171,13 +171,16 @@ public class RNEmasManager {
     }
 
     //页面结束
-    public synchronized void onPageEnd(String pageName, Promise promise) {
+    public synchronized void onPageEnd(ReadableMap args, Promise promise) {
         if (manService == null) {
             promise.reject(new Throwable("ManService = null"));
             return;
         }
-        if (pageName == null) {
-            promise.reject(new Throwable("pageName==null"));
+        String pageName;
+        if (args.hasKey("pageName")) {
+            pageName = args.getString("pageName");
+        }else{
+            promise.reject(new Throwable("pageName=null"));
             return;
         }
         if (stack.size() == 0) {
@@ -186,21 +189,34 @@ public class RNEmasManager {
         }
         PageInfo p = doStack("peek", null);                  //获取栈顶信息
         if (p.getPageName().equals(pageName)) {                              //栈顶page匹配
+            MANPageHitBuilder pageHitBuilder = new MANPageHitBuilder(pageName);
             long endMilliSeconds = SystemClock.elapsedRealtime();
             long startMilliSeconds = p.getTime();
             doStack("pop", null);                           //出栈
             long duration = (endMilliSeconds - startMilliSeconds) / 1000;   //与ios统一故以秒为单位
-            MANPageHitBuilder pageHitBuilder;
-            pageHitBuilder = new MANPageHitBuilder(pageName);
+            pageHitBuilder.setDurationOnPage(duration);
             String referPageName;
-            if (stack.size() != 0) {                                    //栈顶出栈后栈不为空则说明有来源页面
-                PageInfo nowInfo = doStack("peek", null);
-                referPageName = nowInfo.getPageName();
-            } else {
-                referPageName = null;
+            if (args.hasKey("referPageName")) {
+                referPageName = args.getString("referPageName");
+            }else{
+                if (stack.size() != 0) {                                    //栈顶出栈后栈不为空则说明有来源页面
+                    PageInfo nowInfo = doStack("peek", null);
+                    referPageName = nowInfo.getPageName();
+                } else {
+                    referPageName = null;
+                }
             }
             pageHitBuilder.setReferPage(referPageName);
-            pageHitBuilder.setDurationOnPage(duration);
+            if (args.hasKey("properties")) {
+                ReadableMap map = args.getMap("properties");
+                ReadableMapKeySetIterator iterator = map.keySetIterator();
+                while (iterator.hasNextKey()) {
+                    String key = iterator.nextKey();
+                    if (map.getType(key) == ReadableType.String) {
+                        pageHitBuilder.setProperty(key, map.getString(key));
+                    }
+                }
+            }
             manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
         } else {
             promise.reject("pageName doesn't match");

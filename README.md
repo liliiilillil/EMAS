@@ -107,33 +107,36 @@
   `import { onSignUp, onLogin, onLogout, onPageInfo, onEvent } from '@terminus/react-native-emas'`
 
 ### onSignUp
-    用户注册时调用，传入参数为用户名
+    用户注册时调用,传入参数为用户名
 
 ### onLogin
-    用户登录时调用，传入参数为用户名和用户ID
+    用户登录时调用,传入参数为用户名和用户ID
 
 ### onLogout
-    用户注销时调用，无需传参
+    用户注销时调用,无需传参
 
 ### onPageStart
-    进入页面时调用，传入参数为当前页面名称（String类型）
+    进入页面时调用,传入参数为当前页面名称（String类型）
 
 ## onPageEnd
-    离开页面时调用，传入参数为当前页面名称（String类型），与onPageStart配对使用，页面名称与onPageStart传入的页面名称相同，调用该方法将自动上传页面名称和页面停留时间
+    离开页面时调用,与onPageStart配对使用,调用该方法将自动上传页面名称和页面停留时间
+    传入参数为: pageName(必要):当前页面名称,页面名称与onPageStart传入的页面名称对应，String类型
+              referPageName:来源页面,不传参数则自动获取前置页面,String类型
+              properties:其余需传入的自定义属性,map<String,String>类型
 
 ### onPageInfo
-    手动页面埋点，传入参数为: pageName(必要):页面名称，String类型
+    手动页面埋点,传入参数为: pageName(必要):页面名称，String类型
                           referPageName:关联的页面名称，String类型
                           duration:页面停留时间，number类型
                           properties:其余自定义属性，Map<String,String>类型
                           globalProperty:IOS专用，设置全局字段，map<String,String>类型
-                          removeGlobalProperty：IOS专用，删除全局字段，值为globalProperty中的key，Array<String>类型
+                          removeGlobalProperty：IOS专用，删除全局字段，值为globalProperty中的key,Array<String>类型
 
 ### onEvent
-    自定义事件，传入参数为: eventLabel(必要):String类型，只能为字母、数字和下划线组成
-                        eventPage:关联的页面名称，String类型
-                        eventDuration:页面停留时间，number类型
-                        properties:其余自定义属性，map<String,String>类型
+    自定义事件,传入参数为: eventLabel(必要):String类型,只能为字母、数字和下划线组成
+                        eventPage:关联的页面名称,String类型
+                        eventDuration:页面停留时间,number类型
+                        properties:其余自定义属性,map<String,String>类型
 
 ### 使用范例
     ```
@@ -148,11 +151,10 @@
 
       <Button title={'PageStart1'} onPress={()=>onPageStart("duration test page1")}/>
 
-      <Button title={'PageEnd1'} onPress={()=>onPageEnd("duration test page1")}/>
-
+      <Button title={'PageEnd1'} onPress={()=>onPageEnd({pageName:"duration test page1",properties:{key1:"value1",key2:"value2"}})}/>
       <Button title={'PageStart2'} onPress={()=>onPageStart("duration test page2")}/>
 
-      <Button title={'PageEnd2'} onPress={()=>onPageEnd("duration test page2")}/>
+      <Button title={'PageEnd2'} onPress={()=>onPageEnd({pageName:"duration test page2",properties:{key1:"value1",key2:"value2"}})}/>
 
       <Button title={'onPageInfo'} onPress={()=>onPageInfo({pageName:"myTestPage",referPageName:"myReferPageName",duration:200,properties:{gender:"male",height:"182"},globalProperty:{key1:"value1",key2:"value2"},removeGlobalProperty:["key1","key2"]})}/>
 
