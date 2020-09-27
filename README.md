@@ -151,7 +151,8 @@
 
       <Button title={'PageStart1'} onPress={()=>onPageStart("duration test page1")}/>
 
-      <Button title={'PageEnd1'} onPress={()=>onPageEnd({pageName:"duration test page1",properties:{key1:"value1",key2:"value2"}})}/>
+      <Button title={'PageEnd1'} onPress={()=>onPageEnd({pageName:"duration test page1",referPageName:"referPage",properties:{key1:"value1",key2:"value2"}})}/>
+      
       <Button title={'PageStart2'} onPress={()=>onPageStart("duration test page2")}/>
 
       <Button title={'PageEnd2'} onPress={()=>onPageEnd({pageName:"duration test page2",properties:{key1:"value1",key2:"value2"}})}/>
