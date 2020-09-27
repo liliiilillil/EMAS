@@ -50,10 +50,9 @@
   * 在android/app/src/main/java/[...]/MainApplication.java中添加`import com.terminus.emas.RNEmasManager;`
     onCreate方法中添加
     ```
-    RNEmasManager manager=RNEmasManager.getInstance();  //获取单例
-    manager.turnOffAutoTrack();                         //通过此接口关闭页面自动打点功能,不调用默认开启
-    manager.turnOnDebug();                              //打开调试日志，线上版本建议关闭,不调用默认关闭
-    manager.init(this);                                 //初始化
+    RNEmasManager.getInstance().turnOffAutoTrack();     //通过此接口关闭页面自动打点功能,不调用默认开启
+    RNEmasManager.getInstance().turnOnDebug();          //打开调试日志，线上版本建议关闭,不调用默认关闭
+    RNEmasManager.getInstance().init(this);             //初始化
     ```
 
   * 在android/app/src/main/java/[...]/MainActivity.java中添加`import com.terminus.emas.RNEmasManager;`
