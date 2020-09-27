@@ -95,10 +95,10 @@
 
         - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
         {
-            ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
-            [man turnOnDebug];  //打开调试日志，线上版本建议关闭
-            [man setChannel:@"你的渠道"];   //设置渠道（用以标记该app的分发渠道名称），如果不关心可以不设置即不调用该接口，渠道设置将影响控制台【渠道分析】栏目的报表展现。
-            [man autoInit];
+          ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
+          [man turnOnDebug];  //打开调试日志，线上版本建议关闭
+          [man setChannel:@"你的渠道"];   //设置渠道（用以标记该app的分发渠道名称），如果不关心可以不设置即不调用该接口，渠道设置将影响控制台【渠道分析】栏目的报表展现。
+          [man autoInit];
         }
     ```
 
@@ -141,13 +141,22 @@
 
     <View>
       <Button title={'SignUp'} onPress={()=>onSignUp("singuptest")}/>
+
       <Button title={'Login'} onPress={()=>onLogin("userNick","12345")}/>
+
       <Button title={'Logout'} onPress={()=>onLogout()}/>
+
       <Button title={'PageStart1'} onPress={()=>onPageStart("duration test page1")}/>
+
       <Button title={'PageEnd1'} onPress={()=>onPageEnd("duration test page1")}/>
+
       <Button title={'PageStart2'} onPress={()=>onPageStart("duration test page2")}/>
+
       <Button title={'PageEnd2'} onPress={()=>onPageEnd("duration test page2")}/>
+
       <Button title={'onPageInfo'} onPress={()=>onPageInfo({pageName:"myTestPage",referPageName:"myReferPageName",duration:200,properties:{gender:"male",height:"182"},globalProperty:{key:"value"},removeGlobalProperty:["firstKey","secondKey","thirdKey"]})}/>
+
       <Button title={'onEvent'} onPress={()=>onEvent({eventLabel:"label",eventPage:"eventPage",eventDuration:300,properties:{type:"rock",language:"cn"}})}/>
+      
     </View>
     ```
