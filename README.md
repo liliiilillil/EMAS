@@ -125,12 +125,12 @@
               properties:其余需传入的自定义属性,map<String,String>类型
 
 ### onPageInfo
-    手动页面埋点,传入参数为: pageName(必要):页面名称，String类型
-                          referPageName:关联的页面名称，String类型
-                          duration:页面停留时间，number类型
-                          properties:其余自定义属性，Map<String,String>类型
-                          globalProperty:IOS专用，设置全局字段，map<String,String>类型
-                          removeGlobalProperty：IOS专用，删除全局字段，值为globalProperty中的key,Array<String>类型
+    手动页面埋点,传入参数为: pageName(必要):页面名称,String类型
+                          referPageName:关联的页面名称,String类型
+                          duration:页面停留时间,number类型
+                          properties:其余自定义属性,Map<String,String>类型
+                          globalProperty:IOS专用,设置全局字段,map<String,String>类型
+                          removeGlobalProperty:IOS专用,删除全局字段,值为globalProperty中的key,Array<String>类型
 
 ### onEvent
     自定义事件,传入参数为: eventLabel(必要):String类型,只能为字母、数字和下划线组成
@@ -152,7 +152,7 @@
       <Button title={'PageStart1'} onPress={()=>onPageStart("duration test page1")}/>
 
       <Button title={'PageEnd1'} onPress={()=>onPageEnd({pageName:"duration test page1",referPageName:"referPage",properties:{key1:"value1",key2:"value2"}})}/>
-      
+
       <Button title={'PageStart2'} onPress={()=>onPageStart("duration test page2")}/>
 
       <Button title={'PageEnd2'} onPress={()=>onPageEnd({pageName:"duration test page2",properties:{key1:"value1",key2:"value2"}})}/>
