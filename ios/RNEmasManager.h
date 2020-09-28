@@ -10,10 +10,8 @@ static NSString* const TerminusEmasErrorCode_FrontPageNotFound      = @"10005"; 
 static NSString* const TerminusEmasErrorCode_PageNameDoesnotMatch   = @"10006";  // pageName不对应
 static NSString* const TerminusEmasErrorCode_UserInfoNotFound       = @"10007";  // 用户参数传入错误
 static NSString* const TerminusEmasErrorCode_UnknownError           = @"10000";  // 未知错误
-
 @interface RNEmasManager : NSObject <RCTBridgeModule>
-+(void) initWithAppKey:(NSString *)appKey appSecret:(NSString *)secretKey;
-+(void) setDebug:(BOOL)value;
+
 +(BOOL)requiresMainQueueSetup;
 @property NSMutableArray *stack;
 @property(readonly) NSTimeInterval systemUptime;

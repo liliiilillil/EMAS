@@ -5,25 +5,6 @@
 
 RCT_EXPORT_MODULE(RNEmasModule);
 
-+(void) initWithAppKey:(NSString *)appKey appSecret:(NSString *)secretKey
-{
-    ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
-    if (man==nil) {
-        return;
-    }
-    [man autoInit];
-}
-
-+(void) setDebug:(BOOL)value
-{
-    if (value) {
-        ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
-        if (man==nil) {
-            return;
-        }
-        [man turnOnDebug];
-    }
-}
 
 RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
                   resolve:(RCTPromiseResolveBlock)resolve
@@ -266,6 +247,6 @@ RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)
 
 + (BOOL)requiresMainQueueSetup
 {
-    return YES;  // only do this if your module initialization relies on calling UIKit!
+    return YES;  
 }
 @end
