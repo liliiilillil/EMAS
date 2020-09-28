@@ -29,7 +29,7 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
             promise.reject(RNEmasConstants.EmasErrorCode.ManServiceNotFound, new Throwable("ManService not found!"));
         }
         RNEmasManager.getInstance().manService.getMANAnalytics().userRegister(userNick);
-        promise.resolve("sign up succeed!");
+        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
     }
 
     @ReactMethod
@@ -42,7 +42,7 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
             promise.reject(RNEmasConstants.EmasErrorCode.ManServiceNotFound, new Throwable("ManService not found!"));
         }
         RNEmasManager.getInstance().manService.getMANAnalytics().updateUserAccount(userNick, userId);
-        promise.resolve("login succeed!");
+        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
     }
 
     @ReactMethod
@@ -51,7 +51,7 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
             promise.reject(RNEmasConstants.EmasErrorCode.ManServiceNotFound, new Throwable("ManService not found!"));
         }
         RNEmasManager.getInstance().manService.getMANAnalytics().updateUserAccount("", "");
-        promise.resolve("logout succeed!");
+        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
     }
 
     @ReactMethod
