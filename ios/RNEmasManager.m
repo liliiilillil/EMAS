@@ -30,7 +30,7 @@ RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
                   reject:(__unused RCTPromiseRejectBlock)reject)
 {
     if(options==nil){
-        reject(@"error",@"options==null",nil);
+        reject(TerminusEmasErrorCode_ArgsNotFound,@"args not found",nil);
         return;
     }
     NSString *eventLabel = options[@"eventLabel"];
@@ -38,12 +38,12 @@ RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
     long *eventDuration =[options[@"eventDuration"] longValue];
     NSDictionary *properties = options[@"properties"];
     if(eventLabel == nil) {
-        reject(@"error",@"eventLabel=null!",nil);
+        reject(TerminusEmasErrorCode_EventLabelNotFound,@"eventLabel not found!",nil);
         return;
     }
     ALBBMANCustomHitBuilder *customBuilder = [[ALBBMANCustomHitBuilder alloc] init];
     if (customBuilder==nil) {
-        reject(@"error",@"customBuilder==nil!",nil);
+        reject(TerminusEmasErrorCode_ManServiceNotFound,@"customBuilder==nil!",nil);
         return;
     }
     [customBuilder setEventLabel:eventLabel];
@@ -64,12 +64,12 @@ RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
     }
     ALBBMANTracker *traker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
     if (traker==nil) {
-        reject(@"error",@"traker==nil!",nil);
+        reject(TerminusEmasErrorCode_ManServiceNotFound,@"traker==nil!",nil);
         return;
     }
     NSDictionary *dic = [customBuilder build];
     [traker send:dic];
-    resolve(@"custom event send succeed!");
+    resolve(TerminusEmasErrorCode_Success);
 }
 
 RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
@@ -77,12 +77,12 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
                   reject:(__unused RCTPromiseRejectBlock)reject)
 {
     if(options==nil){
-        reject(@"error",@"options==null",nil);
+        reject(TerminusEmasErrorCode_ArgsNotFound,@"options==null",nil);
         return;
     }
     ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
     if (pageHitBuilder==nil) {
-        reject(@"error",@"pageHitBuilder==nil!",nil);
+        reject(TerminusEmasErrorCode_ManServiceNotFound,@"pageHitBuilder==nil!",nil);
         return;
     }
     NSString *pageName = options[@"pageName"];
@@ -92,7 +92,7 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
     NSDictionary *globalProperty = options[@"globalProperty"];
     NSArray *removeGlobalProperty = options[@"removeGlobalProperty"];
     if(pageName == nil) {
-        reject(@"error",@"pageName=null!",nil);
+        reject(TerminusEmasErrorCode_PageNameNotFound,@"pageName=null!",nil);
         return;
     }
     [pageHitBuilder setReferPage:referPageName];
@@ -113,7 +113,7 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
     }
     ALBBMANTracker *tracker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
     if (tracker==nil) {
-        reject(@"error",@"traker==nil!",nil);
+        reject(TerminusEmasErrorCode_ManServiceNotFound,@"traker==nil!",nil);
         return;
     }
     if (globalProperty!=nil&&[globalProperty count]) {
@@ -136,14 +136,14 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
         }
     }
     [tracker send:[pageHitBuilder build]];
-    resolve(@"custom pageInfo send succeed!");
+    resolve(TerminusEmasErrorCode_Success);
 }
 
 //页面开始
 RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
 {
     if (pageName==nil) {
-        reject(@"error",@"pageName==null",nil);
+        reject(TerminusEmasErrorCode_PageNameNotFound,@"pageName==null",nil);
         return;
     }
     NSNumber *startTime=[NSNumber numberWithLong:([self getLaunchSystemTime])];//获取当前已启动时间
@@ -152,7 +152,7 @@ RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName resolve:(RCTPromiseResolveBlo
     }
     NSDictionary *pageInfo =@{@"pageName":pageName,@"time":startTime};
     [_stack addObject:pageInfo];                        //将页面名称和当前时间传入模拟栈
-    resolve(@"page start!");
+    resolve(TerminusEmasErrorCode_Success);
 }
 
 RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
@@ -161,11 +161,11 @@ RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBl
     NSString *referPageName = options[@"referPageName"];
     NSDictionary *properties = options[@"properties"];
     if (_stack.count==0) {
-        reject(@"error",@"please use onPageStart first",nil);
+        reject(TerminusEmasErrorCode_FrontPageNotFound,@"please use onPageStart first",nil);
         return;                                             //若模拟栈为空则说明未使用onPageStart函数
     }
     if (pageName==nil) {
-        reject(@"error",@"pageName==null",nil);
+        reject(TerminusEmasErrorCode_PageNameNotFound,@"pageName==null",nil);
         return;
     }
     NSDictionary *lastObject=_stack.lastObject;                                   //取出栈顶元素
@@ -178,7 +178,7 @@ RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBl
         long *duration =[durationNumber longValue];                              //计算停留时间
         ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
         if (pageHitBuilder==nil) {
-            reject(@"error",@"pageHitBuilder==nil!",nil);
+            reject(TerminusEmasErrorCode_ManServiceNotFound,@"pageHitBuilder==nil!",nil);
             return;
         }
         if (referPageName==nil) {
@@ -205,13 +205,13 @@ RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBl
         [pageHitBuilder setDurationOnPage:duration];
         ALBBMANTracker *tracker = [[ALBBMANAnalytics getInstance] getDefaultTracker];
         if (tracker==nil) {
-            reject(@"error",@"tracker==nil!",nil);
+            reject(TerminusEmasErrorCode_ManServiceNotFound,@"tracker==nil!",nil);
             return;
         }
         [tracker send:[pageHitBuilder build]];
-        resolve(@"page end!");
+        resolve(TerminusEmasErrorCode_Success);
     }else{
-        reject(@"error",@"pageName wrong",nil);
+        reject(TerminusEmasErrorCode_PageNameDoesnotMatch,@"pageName does not match",nil);
     }
 }
 
@@ -219,16 +219,16 @@ RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBl
 RCT_EXPORT_METHOD(onLogin:(NSString *)userNick userid:(NSString *)userId resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
 {
     if (userNick==nil||userId==nil) {
-        reject(@"error",@"userNick==null||userId==null",nil);
+        reject(TerminusEmasErrorCode_UserInfoNotFound,@"userNick==null||userId==null",nil);
         return;
     }
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
     if (man==nil) {
-        reject(@"error",@"ALBBMANAnalytics==nil!",nil);
+        reject(TerminusEmasErrorCode_ManServiceNotFound,@"ALBBMANAnalytics==nil!",nil);
         return;
     }
     [man updateUserAccount:userNick userid:userId];
-    resolve(@"login succeed!");
+    resolve(TerminusEmasErrorCode_Success);
 }
 
 //注销
@@ -236,27 +236,27 @@ RCT_EXPORT_METHOD(onLogout:resolve:(RCTPromiseResolveBlock)resolve reject:(__unu
 {
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
     if (man==nil) {
-        reject(@"error",@"ALBBMANAnalytics==nil!",nil);
+        reject(TerminusEmasErrorCode_ManServiceNotFound,@"ALBBMANAnalytics==nil!",nil);
         return;
     }
     [man updateUserAccount:@"" userid:@""];
-    resolve(@"logout succeed!");
+    resolve(TerminusEmasErrorCode_Success);
 }
 
 //注册
 RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
 {
     if (userNick==nil) {
-        reject(@"error",@"userNick==null",nil);
+        reject(TerminusEmasErrorCode_UserInfoNotFound,@"userNick==null",nil);
         return;
     }
     ALBBMANAnalytics *man = [ALBBMANAnalytics getInstance];
     if (man==nil) {
-        reject(@"error",@"ALBBMANAnalytics==nil!",nil);
+        reject(TerminusEmasErrorCode_ManServiceNotFound,@"ALBBMANAnalytics==nil!",nil);
         return;
     }
     [man userRegister:userNick];
-    resolve(@"signUp succeed!");
+    resolve(TerminusEmasErrorCode_Success);
 }
 - (long)getLaunchSystemTime
 {
