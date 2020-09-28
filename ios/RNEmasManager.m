@@ -178,7 +178,7 @@ RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBl
         long *duration =[durationNumber longValue];                              //计算停留时间
         ALBBMANPageHitBuilder *pageHitBuilder = [[ALBBMANPageHitBuilder alloc] init];
         if (pageHitBuilder==nil) {
-           reject(@"error",@"pageHitBuilder==nil!",nil);
+            reject(@"error",@"pageHitBuilder==nil!",nil);
             return;
         }
         if (referPageName==nil) {
