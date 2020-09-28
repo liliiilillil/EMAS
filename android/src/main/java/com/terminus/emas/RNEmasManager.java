@@ -115,7 +115,7 @@ public class RNEmasManager {
             }
         }
         manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
-        promise.resolve("pageInfo send succeed!");
+        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
     }
 
     //自定义事件
@@ -158,7 +158,7 @@ public class RNEmasManager {
             }
         }
         manService.getMANAnalytics().getDefaultTracker().send(hitBuilder.build());
-        promise.resolve("custom event send succeed!");
+        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
     }
 
     //页面开始
@@ -175,7 +175,7 @@ public class RNEmasManager {
         p.setPageName(pageName);
         p.setTime(startMilliSeconds);
         doStack("push", p);
-        promise.resolve("page start!");
+        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
     }
 
     //页面结束
@@ -226,7 +226,7 @@ public class RNEmasManager {
             pageHitBuilder.setDurationOnPage(duration);
             pageHitBuilder.setReferPage(referPageName);
             manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
-            promise.resolve("page end!");
+            promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
         } else {
             promise.reject(RNEmasConstants.EmasErrorCode.PageNameDoesnotMatch, new Throwable("pageName doesn't match"));
             return;
