@@ -15,9 +15,6 @@ static NSString* const TerminusEmasErrorCode_UnknownError           = @"10000"; 
 +(void) initWithAppKey:(NSString *)appKey appSecret:(NSString *)secretKey;
 +(void) setDebug:(BOOL)value;
 +(BOOL)requiresMainQueueSetup;
-@property NSNumber *startTime;
 @property NSMutableArray *stack;
-@property NSMutableArray *pageInfo;
-@property NSValue *value;
 @property(readonly) NSTimeInterval systemUptime;
 @end
