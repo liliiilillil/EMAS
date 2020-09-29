@@ -50,7 +50,7 @@ RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
     }
     NSDictionary *dic = [customBuilder build];
     [traker send:dic];
-    resolve(TerminusEmasErrorCode_Success);
+    resolve(successResult);
 }
 
 RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
@@ -117,7 +117,7 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
         }
     }
     [tracker send:[pageHitBuilder build]];
-    resolve(TerminusEmasErrorCode_Success);
+    resolve(successResult);
 }
 
 //页面开始
@@ -133,7 +133,7 @@ RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName resolve:(RCTPromiseResolveBlo
     }
     NSDictionary *pageInfo =@{@"pageName":pageName,@"time":startTime};
     [_stack addObject:pageInfo];                        //将页面名称和当前时间传入模拟栈
-    resolve(TerminusEmasErrorCode_Success);
+    resolve(successResult);
 }
 
 RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject)
@@ -190,7 +190,7 @@ RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBl
             return;
         }
         [tracker send:[pageHitBuilder build]];
-        resolve(TerminusEmasErrorCode_Success);
+        resolve(successResult);
     }else{
         reject(TerminusEmasErrorCode_PageNameDoesnotMatch,@"pageName does not match",nil);
     }
@@ -209,7 +209,7 @@ RCT_EXPORT_METHOD(onLogin:(NSString *)userNick userid:(NSString *)userId resolve
         return;
     }
     [man updateUserAccount:userNick userid:userId];
-    resolve(TerminusEmasErrorCode_Success);
+    resolve(successResult);
 }
 
 //注销
@@ -221,7 +221,7 @@ RCT_EXPORT_METHOD(onLogout:resolve:(RCTPromiseResolveBlock)resolve reject:(__unu
         return;
     }
     [man updateUserAccount:@"" userid:@""];
-    resolve(TerminusEmasErrorCode_Success);
+    resolve(successResult);
 }
 
 //注册
@@ -237,7 +237,7 @@ RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)
         return;
     }
     [man userRegister:userNick];
-    resolve(TerminusEmasErrorCode_Success);
+    resolve(successResult);
 }
 - (long)getLaunchSystemTime
 {
@@ -247,6 +247,6 @@ RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)
 
 + (BOOL)requiresMainQueueSetup
 {
-    return YES;  
+    return YES;
 }
 @end
