@@ -102,7 +102,7 @@
 
 ## 使用
 
-  `import { onSignUp, onLogin, onLogout, onPageInfo, onEvent } from '@terminus/react-native-emas'`
+  `import { onSignUp, onLogin, onLogout, onPageInfo, onEvent, onPageStart, onPageEnd } from '@terminus/react-native-emas'`
 
 ## 以下方法均以promise返回结果
 ### onSignUp
