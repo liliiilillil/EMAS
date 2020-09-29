@@ -16,6 +16,9 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.WritableMap;
+import com.terminus.emas.constants.RNEmasConstants;
+import com.terminus.emas.results.RNEmasResults;
 
 import java.util.Stack;
 
@@ -115,7 +118,8 @@ public class RNEmasManager {
             }
         }
         manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
-        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
+        promise.resolve(RNEmasResults.formatResultCode());
+
     }
 
     //自定义事件
@@ -158,7 +162,7 @@ public class RNEmasManager {
             }
         }
         manService.getMANAnalytics().getDefaultTracker().send(hitBuilder.build());
-        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
+        promise.resolve(RNEmasResults.formatResultCode());
     }
 
     //页面开始
@@ -175,7 +179,7 @@ public class RNEmasManager {
         p.setPageName(pageName);
         p.setTime(startMilliSeconds);
         doStack("push", p);
-        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
+        promise.resolve(RNEmasResults.formatResultCode());
     }
 
     //页面结束
@@ -226,7 +230,7 @@ public class RNEmasManager {
             pageHitBuilder.setDurationOnPage(duration);
             pageHitBuilder.setReferPage(referPageName);
             manService.getMANAnalytics().getDefaultTracker().send(pageHitBuilder.build());
-            promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
+            promise.resolve(RNEmasResults.formatResultCode());
         } else {
             promise.reject(RNEmasConstants.EmasErrorCode.PageNameDoesnotMatch, new Throwable("pageName doesn't match"));
             return;
