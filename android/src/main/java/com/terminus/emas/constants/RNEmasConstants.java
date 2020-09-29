@@ -1,4 +1,4 @@
-package com.terminus.emas;
+package com.terminus.emas.constants;
 
 public class RNEmasConstants {
 

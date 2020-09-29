@@ -5,6 +5,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.terminus.emas.constants.RNEmasConstants;
+import com.terminus.emas.results.RNEmasResults;
 
 
 public class RNEmasModule extends ReactContextBaseJavaModule {
@@ -29,7 +31,7 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
             promise.reject(RNEmasConstants.EmasErrorCode.ManServiceNotFound, new Throwable("ManService not found!"));
         }
         RNEmasManager.getInstance().manService.getMANAnalytics().userRegister(userNick);
-        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
+        promise.resolve(RNEmasResults.formatResultCode());
     }
 
     @ReactMethod
@@ -42,7 +44,7 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
             promise.reject(RNEmasConstants.EmasErrorCode.ManServiceNotFound, new Throwable("ManService not found!"));
         }
         RNEmasManager.getInstance().manService.getMANAnalytics().updateUserAccount(userNick, userId);
-        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
+        promise.resolve(RNEmasResults.formatResultCode());
     }
 
     @ReactMethod
@@ -51,7 +53,7 @@ public class RNEmasModule extends ReactContextBaseJavaModule {
             promise.reject(RNEmasConstants.EmasErrorCode.ManServiceNotFound, new Throwable("ManService not found!"));
         }
         RNEmasManager.getInstance().manService.getMANAnalytics().updateUserAccount("", "");
-        promise.resolve(RNEmasConstants.EmasErrorCode.EmasSuccess);
+        promise.resolve(RNEmasResults.formatResultCode());
     }
 
     @ReactMethod
