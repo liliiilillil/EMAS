@@ -36,7 +36,7 @@
     ···
     <application>
       <meta-data android:name="ALIYUN_MAN_CHANNEL" android:value="你的渠道" ></meta-data>
-      <meta-data android:name="EMAS_APPKEY" android:value="你的AppKey"></meta-data>
+      <meta-data android:name="EMAS_APPKEY" android:value="emas+你的AppKey"></meta-data>(如emas12345678)
       <meta-data android:name="EMAS_APPSECRET" android:value="你的APPsecret"></meta-data>
     </application>
     ```
