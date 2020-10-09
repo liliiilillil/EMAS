@@ -9,8 +9,7 @@ public class RNEmasResults {
 
     public static WritableMap formatResultCode() {
         WritableMap result = Arguments.createMap();
-        result.putString("sueecss", RNEmasConstants.EmasErrorCode.EmasSuccess);
+        result.putString("success", RNEmasConstants.EmasErrorCode.EmasSuccess);
         return result;
     }
 }
-
