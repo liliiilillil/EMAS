@@ -50,6 +50,7 @@ RCT_EXPORT_METHOD(onEvent:(NSDictionary *)options
     }
     NSDictionary *dic = [customBuilder build];
     [traker send:dic];
+    NSDictionary* successResult=[NSDictionary dictionaryWithObjectsAndKeys:@"success",TerminusEmasErrorCode_Success, nil];
     resolve(successResult);
 }
 
@@ -117,6 +118,7 @@ RCT_EXPORT_METHOD(onPageInfo:(NSDictionary *)options
         }
     }
     [tracker send:[pageHitBuilder build]];
+        NSDictionary* successResult=[NSDictionary dictionaryWithObjectsAndKeys:@"success",TerminusEmasErrorCode_Success, nil];
     resolve(successResult);
 }
 
@@ -133,6 +135,7 @@ RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName resolve:(RCTPromiseResolveBlo
     }
     NSDictionary *pageInfo =@{@"pageName":pageName,@"time":startTime};
     [_stack addObject:pageInfo];                        //将页面名称和当前时间传入模拟栈
+        NSDictionary* successResult=[NSDictionary dictionaryWithObjectsAndKeys:@"success",TerminusEmasErrorCode_Success, nil];
     resolve(successResult);
 }
 
@@ -190,6 +193,7 @@ RCT_EXPORT_METHOD(onPageEnd:(NSDictionary *)options resolve:(RCTPromiseResolveBl
             return;
         }
         [tracker send:[pageHitBuilder build]];
+            NSDictionary* successResult=[NSDictionary dictionaryWithObjectsAndKeys:@"success",TerminusEmasErrorCode_Success, nil];
         resolve(successResult);
     }else{
         reject(TerminusEmasErrorCode_PageNameDoesnotMatch,@"pageName does not match",nil);
@@ -209,6 +213,7 @@ RCT_EXPORT_METHOD(onLogin:(NSString *)userNick userid:(NSString *)userId resolve
         return;
     }
     [man updateUserAccount:userNick userid:userId];
+        NSDictionary* successResult=[NSDictionary dictionaryWithObjectsAndKeys:@"success",TerminusEmasErrorCode_Success, nil];
     resolve(successResult);
 }
 
@@ -221,6 +226,7 @@ RCT_EXPORT_METHOD(onLogout:resolve:(RCTPromiseResolveBlock)resolve reject:(__unu
         return;
     }
     [man updateUserAccount:@"" userid:@""];
+        NSDictionary* successResult=[NSDictionary dictionaryWithObjectsAndKeys:@"success",TerminusEmasErrorCode_Success, nil];
     resolve(successResult);
 }
 
@@ -237,6 +243,7 @@ RCT_EXPORT_METHOD(onSignUp:(NSString *)userNick resolve:(RCTPromiseResolveBlock)
         return;
     }
     [man userRegister:userNick];
+        NSDictionary* successResult=[NSDictionary dictionaryWithObjectsAndKeys:@"success",TerminusEmasErrorCode_Success, nil];
     resolve(successResult);
 }
 - (long)getLaunchSystemTime

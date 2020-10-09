@@ -43,7 +43,7 @@
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
       <meta-data android:name="android.max_aspect" android:value="2.1" />
         <meta-data android:name="ALIYUN_MAN_CHANNEL" android:value="mychannel" ></meta-data>
-        <meta-data android:name="EMAS_APPKEY" android:value="\31233324"></meta-data>
+        <meta-data android:name="EMAS_APPKEY" android:value="31233324"></meta-data>
         <meta-data android:name="EMAS_APPSECRET" android:value="58a7d81ace92556d2ad0726119236db5"></meta-data>
     </application>
 
