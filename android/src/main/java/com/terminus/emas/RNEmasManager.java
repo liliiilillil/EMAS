@@ -54,8 +54,7 @@ public class RNEmasManager {
         if (manService == null) {
             return;
         }
-        String appKey =getAppKeyFromManifest(application);
-        appKey=appKey.replace("emas","");
+        String appKey = getAppKeyFromManifest(application).replace("emas", "");
         String appSecret = getAppSecretFromManifest(application);
         Context context = application.getApplicationContext();
         manService.getMANAnalytics().init(application, context, appKey, appSecret);
