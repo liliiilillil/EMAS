@@ -10,7 +10,7 @@ static NSString* const TerminusEmasErrorCode_FrontPageNotFound      = @"10005"; 
 static NSString* const TerminusEmasErrorCode_PageNameDoesnotMatch   = @"10006";  // pageName不对应
 static NSString* const TerminusEmasErrorCode_UserInfoNotFound       = @"10007";  // 用户参数传入错误
 static NSString* const TerminusEmasErrorCode_UnknownError           = @"10000";  // 未知错误
-NSDictionary* successResult=[NSDictionary dictionaryWithObjectsAndKeys:@"success",TerminusEmasErrorCode_Success, nil];
+
 @interface RNEmasManager : NSObject <RCTBridgeModule>
 
 +(BOOL)requiresMainQueueSetup;
