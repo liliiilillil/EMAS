@@ -117,7 +117,7 @@
 ### onPageStart
     进入页面时调用,传入参数为当前页面名称,String类型
 
-## onPageEnd
+### onPageEnd
     离开页面时调用,与onPageStart配对使用,调用该方法将自动上传页面名称和页面停留时间
     传入参数为: pageName(必要):当前页面名称,页面名称与onPageStart传入的页面名称对应，String类型
               referPageName:来源页面,不传参数则自动获取前置页面,String类型
