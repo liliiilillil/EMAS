@@ -136,7 +136,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        manifestPlaceholders = [TERMINUS_ENV_TYPE_VALUE: "production",EMAS_APPKEY:"31233324",EMAS_APPSECRET:"58a7d81ace92556d2ad0726119236db5",EMAS_CHANNEL:"aaa"]
+        manifestPlaceholders = [TERMINUS_ENV_TYPE_VALUE: "production","EMAS_APPKEY":"31233324","EMAS_APPSECRET":"58a7d81ace92556d2ad0726119236db5","EMAS_CHANNEL":"aaa"]
         versionCode 1
         versionName "0.0.1"
         ndk {

@@ -54,7 +54,7 @@ public class RNEmasManager {
         if (manService == null) {
             return;
         }
-        String appKey = getAppKeyFromManifest(application);
+        String appKey = String.valueOf(getAppKeyFromManifest(application));
         String appSecret = getAppSecretFromManifest(application);
         Context context = application.getApplicationContext();
         manService.getMANAnalytics().init(application, context, appKey, appSecret);
@@ -269,14 +269,14 @@ public class RNEmasManager {
         }
     }
 
-    private String getAppKeyFromManifest(Application application) {
+    private int getAppKeyFromManifest(Application application) {
         try {
             ApplicationInfo applicationInfo = application.getPackageManager().getApplicationInfo(application.getPackageName(), PackageManager.GET_META_DATA);
-            return applicationInfo.metaData.getString(APPKEY_NAME);
+            return applicationInfo.metaData.getInt(APPKEY_NAME);
         } catch (Throwable e) {
             //e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
     private String getAppSecretFromManifest(Application application) {
